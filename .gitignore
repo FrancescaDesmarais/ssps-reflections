@@ -1,2 +1,7 @@
 .DS_Store
 *.log
+.Rhistory
+.Ulysses-Group.plist
+CLAUDE.md
+SSPs Reflections- Project Architecture.md
+Visual Style.md
