@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSPs Reflections — What Future Are We In?</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- PROGRESS NAV (pages 1–4 only) -->
+  <nav id="progress-nav">
+    <div class="progress-inner">
+      <div class="progress-step active" id="prog-1">1. Choose a Future</div>
+      <div class="progress-step" id="prog-2">2. Signals</div>
+      <div class="progress-step" id="prog-3">3. AI Scenarios</div>
+      <div class="progress-step" id="prog-4">4. Reflection</div>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAGE 1: Choose a Future                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="page-1" class="page active">
+    <div class="page-inner">
+      <h1>What future are we in?</h1>
+      <p class="lead">[Placeholder: Below are five possible futures based on the Shared Socioeconomic Pathways — a set of scenarios developed by climate scientists to explore different global trajectories. Each represents a different society, level of climate action, and degree of climate impact. Explore the options and select the one you believe best describes where the world is heading.]</p>
+
+      <div class="futures-grid">
+
+        <div class="future-card" data-id="ssp1" onclick="handleCardClick('ssp1')">
+          <div class="card-number">SSP1</div>
+          <h2 class="card-title">Sustainability</h2>
+          <p class="card-desc">A world on the green road to sustainable development</p>
+          <div class="card-footer">
+            <span class="card-tag">Low emissions · High cooperation</span>
+          </div>
+          <div class="card-selected-badge">Selected ✓</div>
+        </div>
+
+        <div class="future-card" data-id="ssp2" onclick="handleCardClick('ssp2')">
+          <div class="card-number">SSP2</div>
+          <h2 class="card-title">Middle of the Road</h2>
+          <p class="card-desc">A world where trends broadly follow historical patterns</p>
+          <div class="card-footer">
+            <span class="card-tag">Medium emissions · Moderate change</span>
+          </div>
+          <div class="card-selected-badge">Selected ✓</div>
+        </div>
+
+        <div class="future-card" data-id="ssp3" onclick="handleCardClick('ssp3')">
+          <div class="card-number">SSP3</div>
+          <h2 class="card-title">Regional Rivalry</h2>
+          <p class="card-desc">A fragmented world of nationalism and resurgent conflicts</p>
+          <div class="card-footer">
+            <span class="card-tag">High emissions · Low cooperation</span>
+          </div>
+          <div class="card-selected-badge">Selected ✓</div>
+        </div>
+
+        <div class="future-card" data-id="ssp4" onclick="handleCardClick('ssp4')">
+          <div class="card-number">SSP4</div>
+          <h2 class="card-title">Inequality</h2>
+          <p class="card-desc">A world divided between an elite and those left behind</p>
+          <div class="card-footer">
+            <span class="card-tag">Mixed emissions · Divided world</span>
+          </div>
+          <div class="card-selected-badge">Selected ✓</div>
+        </div>
+
+        <div class="future-card" data-id="ssp5" onclick="handleCardClick('ssp5')">
+          <div class="card-number">SSP5</div>
+          <h2 class="card-title">Fossil-fueled Development</h2>
+          <p class="card-desc">A world pushing hard for growth powered by fossil fuels</p>
+          <div class="card-footer">
+            <span class="card-tag">Very high emissions · Growth-focused</span>
+          </div>
+          <div class="card-selected-badge">Selected ✓</div>
+        </div>
+
+      </div>
+
+      <div class="page-footer">
+        <p class="hint" id="hint-1">Click a future to select it and read the deep dive.</p>
+        <button class="btn-primary" id="btn-next-1" onclick="goNext(1)" disabled>Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- MODAL (shared, populated via JS)                           -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+      <div id="modal-body"></div>
+      <div class="modal-footer">
+        <p class="modal-selected-note" id="modal-selected-note"></p>
+        <button class="btn-secondary" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAGE 2: Signals                                            -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="page-2" class="page">
+    <div class="page-inner">
+      <div class="page-context" id="page2-context"></div>
+      <h1>What signals are you seeing that point towards this future?</h1>
+      <p class="lead">[Placeholder: Share what you're observing in the world — news events, data trends, conversations, or shifts in behaviour — that makes this future feel most likely to you.]</p>
+      <textarea id="signals-input" class="text-area" placeholder="What are you seeing..."></textarea>
+      <div class="page-footer">
+        <button class="btn-secondary" onclick="goBack(2)">← Back</button>
+        <button class="btn-primary" onclick="goNext(2)">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAGE 3: AI Scenarios                                       -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="page-3" class="page">
+    <div class="page-inner">
+      <h1>How will AI change this future?</h1>
+      <p class="lead">[Placeholder: The SSPs were written before the AI revolution. Below are four ways AI could reshape whichever future we're heading towards. Drag the sliders to assign a probability to each — your predictions must total 100%.]</p>
+
+      <div class="ai-grid">
+
+        <div class="ai-box">
+          <div class="ai-icon" aria-hidden="true">↑</div>
+          <h3>AI Growth</h3>
+          <p>[Placeholder: AI supercharges economic development — amplifying and accelerating the trends already in motion in whichever world we're in.]</p>
+          <div class="slider-wrap">
+            <input type="range" class="ai-slider" id="slider-0" min="0" max="100" value="25"
+              oninput="updateSliders(0, this.value)" aria-label="AI Growth percentage">
+            <span class="slider-val" id="val-0">25%</span>
+          </div>
+        </div>
+
+        <div class="ai-box">
+          <div class="ai-icon" aria-hidden="true">↓</div>
+          <h3>AI Collapse</h3>
+          <p>[Placeholder: AI systems fail, are abandoned, or trigger a societal backlash — reversing optimism and creating new instabilities in an already unstable world.]</p>
+          <div class="slider-wrap">
+            <input type="range" class="ai-slider" id="slider-1" min="0" max="100" value="25"
+              oninput="updateSliders(1, this.value)" aria-label="AI Collapse percentage">
+            <span class="slider-val" id="val-1">25%</span>
+          </div>
+        </div>
+
+        <div class="ai-box">
+          <div class="ai-icon" aria-hidden="true">⟳</div>
+          <h3>AI Transformation</h3>
+          <p>[Placeholder: AI fundamentally reshapes how societies organise — some elements of the SSP future hold, but the underlying logic changes entirely.]</p>
+          <div class="slider-wrap">
+            <input type="range" class="ai-slider" id="slider-2" min="0" max="100" value="25"
+              oninput="updateSliders(2, this.value)" aria-label="AI Transformation percentage">
+            <span class="slider-val" id="val-2">25%</span>
+          </div>
+        </div>
+
+        <div class="ai-box">
+          <div class="ai-icon" aria-hidden="true">⊘</div>
+          <h3>AI Constraint</h3>
+          <p>[Placeholder: AI is heavily regulated, curtailed, or simply limited in impact — it becomes a footnote rather than a transformative force.]</p>
+          <div class="slider-wrap">
+            <input type="range" class="ai-slider" id="slider-3" min="0" max="100" value="25"
+              oninput="updateSliders(3, this.value)" aria-label="AI Constraint percentage">
+            <span class="slider-val" id="val-3">25%</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="total-bar" id="total-bar">
+        Total allocated: <strong id="total-val">100</strong>%
+      </div>
+
+      <div class="page-footer">
+        <button class="btn-secondary" onclick="goBack(3)">← Back</button>
+        <button class="btn-primary" onclick="goNext(3)">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAGE 4: Dynamic Reflection                                 -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="page-4" class="page">
+    <div class="page-inner">
+      <h1 id="page4-question"></h1>
+      <p class="lead" id="page4-sub">[Placeholder: Share what comes to mind — forces, policies, technologies, social movements, or events that could shape or shift this trajectory.]</p>
+      <textarea id="reflection-input" class="text-area" placeholder="Your reflection..."></textarea>
+      <div class="page-footer">
+        <button class="btn-secondary" onclick="goBack(4)">← Back</button>
+        <button class="btn-primary" onclick="goNext(4)">Next →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAGE 5: Review                                             -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="page-5" class="page">
+    <div class="page-inner">
+      <h1>Review your predictions</h1>
+      <p class="lead">[Placeholder: Take a moment to review what you've shared. You can go back and edit anything before submitting.]</p>
+
+      <div class="review-block">
+
+        <div class="review-section-heading">Your future</div>
+        <div class="review-item">
+          <span class="review-label">Selected pathway</span>
+          <span class="review-value" id="review-future">—</span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">Signals you're seeing</span>
+          <span class="review-value" id="review-signals">—</span>
+        </div>
+
+        <div class="review-section-heading">AI probability allocation</div>
+        <div class="review-item">
+          <span class="review-label">AI Growth</span>
+          <span class="review-value" id="review-growth">—</span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">AI Collapse</span>
+          <span class="review-value" id="review-collapse">—</span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">AI Transformation</span>
+          <span class="review-value" id="review-transformation">—</span>
+        </div>
+        <div class="review-item">
+          <span class="review-label">AI Constraint</span>
+          <span class="review-value" id="review-constraint">—</span>
+        </div>
+
+        <div class="review-section-heading">Your reflection</div>
+        <div class="review-item review-item--full">
+          <span class="review-label" id="review-question-label">Reflection question</span>
+          <span class="review-value" id="review-reflection">—</span>
+        </div>
+
+      </div>
+
+      <div class="page-footer">
+        <button class="btn-secondary" onclick="goBack(5)">← Back</button>
+        <button class="btn-primary" onclick="goNext(5)">Submit →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAGE 6: Optional Share                                     -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="page-6" class="page">
+    <div class="page-inner page-inner--narrow">
+      <h1>Anything else to add?</h1>
+      <p class="lead">[Placeholder: If you'd like to share more context — a caveat, a hunch, or a thought that didn't fit earlier — you can do so here. This is entirely optional.]</p>
+      <textarea id="optional-input" class="text-area" placeholder="Optional: share anything else..."></textarea>
+      <div class="page-footer">
+        <button class="btn-secondary" onclick="submitForm(false)">Skip →</button>
+        <button class="btn-primary" onclick="submitForm(true)">Contribute →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PAGE 7: Thank You                                          -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="page-7" class="page">
+    <div class="page-inner">
+      <h1>Thank you.</h1>
+      <p class="lead">[Placeholder: Your predictions have been recorded. You're part of a growing picture of how people understand the world's trajectory. Explore the resources below to learn more and get involved.]</p>
+
+      <div class="ty-grid">
+
+        <div class="ty-card">
+          <h3>About this project</h3>
+          <p>[Placeholder: This form is part of an ongoing exploration of how people perceive the Shared Socioeconomic Pathways — and how AI might reshape climate futures. Created by Francesca Desmarais.]</p>
+          <a href="https://www.linkedin.com/in/francescadesmarais" target="_blank" rel="noopener" class="ty-link">Francesca on LinkedIn →</a>
+        </div>
+
+        <div class="ty-card">
+          <h3>SSP References</h3>
+          <ul class="ty-list">
+            <li><a href="#" class="ty-link">[Placeholder: O'Neill et al. (2017) — The roads ahead: Narratives for shared socioeconomic pathways]</a></li>
+            <li><a href="#" class="ty-link">[Placeholder: Riahi et al. (2017) — The Shared Socioeconomic Pathways and their energy, land use, and GHG emissions implications]</a></li>
+            <li><a href="#" class="ty-link">[Placeholder: Kriegler et al. (2012) — The need for and use of socioeconomic scenarios for climate change analysis]</a></li>
+          </ul>
+        </div>
+
+        <div class="ty-card">
+          <h3>Get involved in climate action</h3>
+          <ul class="ty-list">
+            <li><a href="#" class="ty-link">[Placeholder: Climate organisation 1]</a></li>
+            <li><a href="#" class="ty-link">[Placeholder: Climate organisation 2]</a></li>
+            <li><a href="#" class="ty-link">[Placeholder: Climate organisation 3]</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <footer class="site-footer">
+        <p>SSPs Reflections &middot; Created by Francesca Desmarais &middot; 2025</p>
+      </footer>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
