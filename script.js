@@ -18,6 +18,7 @@ const formData = {
 
 let previousPage  = 1;
 let carouselIndex = 0;
+let hasSubmitted  = false;
 
 // ─── SSP data ──────────────────────────────────────────────────────────────
 const sspIds = ['ssp1', 'ssp2', 'ssp3', 'ssp4', 'ssp5'];
@@ -109,12 +110,16 @@ function goToPage(n) {
     bc.style.display = 'block';
     document.querySelectorAll('.bc-step').forEach(el => {
       const step = parseInt(el.dataset.step);
+      const isDone = step < n;
       el.classList.toggle('active', step === n);
-      el.classList.toggle('done',   step < n);
+      el.classList.toggle('done',   isDone);
+      el.onclick = isDone ? function() { goToPage(step); } : null;
     });
   } else {
     bc.style.display = 'none';
   }
+
+  if (n === 'about') updateAboutBackBtn();
 }
 
 function goNext(fromPage) {
@@ -150,6 +155,11 @@ function goBack(fromPage) {
   } else {
     goToPage(fromPage - 1);
   }
+}
+
+function updateAboutBackBtn() {
+  const btn = document.getElementById('about-back-btn');
+  btn.style.display = (previousPage >= 2 && !hasSubmitted) ? 'inline-block' : 'none';
 }
 
 function goToAbout() {
@@ -219,6 +229,7 @@ function selectFromCarousel() {
   document.getElementById('btn-add-predictions').disabled = false;
 
   document.getElementById('carousel-select-btn').textContent = 'Selected ✓';
+  closeCarousel();
 }
 
 // Keyboard navigation for carousel
@@ -329,6 +340,8 @@ function submitForm(includeOptional) {
     reflection:       formData.reflection,
     additionalInfo:   formData.additionalInfo
   };
+
+  hasSubmitted = true;
 
   if (SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
     fetch(SCRIPT_URL + '?' + new URLSearchParams(payload).toString()).catch(function() {});

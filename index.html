@@ -11,7 +11,7 @@
   <!-- TOP NAV -->
   <nav id="top-nav">
     <div class="top-nav-inner">
-      <span class="top-nav-title">[SSPs Reflections]</span>
+      <button class="top-nav-title" onclick="goToPage(1)">[SSPs Reflections]</button>
       <button class="top-nav-link" onclick="goToAbout()">About</button>
     </div>
   </nav>
@@ -255,7 +255,7 @@
       </div>
 
       <div class="about-nav">
-        <button class="btn-secondary" onclick="goBack('about')">← Back</button>
+        <button class="btn-secondary" id="about-back-btn" onclick="goBack('about')">← Back</button>
         <button class="btn-primary" onclick="goToPage(1)">Start the form →</button>
       </div>
 

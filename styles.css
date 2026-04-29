@@ -47,6 +47,16 @@ body {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  color: var(--black);
+  cursor: pointer;
+  padding: 0;
+}
+
+.top-nav-title:hover {
+  opacity: 0.55;
 }
 
 .top-nav-link {
@@ -93,6 +103,13 @@ body {
 
 .bc-step.done {
   color: var(--gray-dark);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.bc-step.done:hover {
+  color: var(--black);
 }
 
 .bc-step.active {
