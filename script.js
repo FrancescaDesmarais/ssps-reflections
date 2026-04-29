@@ -317,7 +317,7 @@ function setPage4Question() {
     category = 'winner';
     question  = 'You predict that <em>' + future + ' + ' + aiScenarioLabels[sorted[0].i] + '</em> is most likely. What do you think could accelerate or reverse this future direction?';
 
-  } else if (Math.abs(sorted[0].v - sorted[1].v) <= 10 && sorted[0].v > 35 && sorted[1].v > 35) {
+  } else if (Math.abs(sorted[0].v - sorted[1].v) <= 10 && sorted[0].v > 34 && sorted[1].v > 34) {
     category = 'tie';
     question  = 'You predict that <em>' + future + ' + ' + aiScenarioLabels[sorted[0].i] + '</em> or <em>' + aiScenarioLabels[sorted[1].i] + '</em> are equally possible. What do you think could accelerate towards the future you prefer?';
 
