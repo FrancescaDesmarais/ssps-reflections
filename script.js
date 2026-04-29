@@ -1,5 +1,4 @@
 // ─── Config ───────────────────────────────────────────────────────────────
-// Replace with your deployed Google Apps Script web app URL
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykLGfLi1R6qo2C6F-M7PdRikXDuVAvvcyfngysf1z0qncfXn_7hSq__9HwO2DJmDl0/exec';
 
 // ─── State ────────────────────────────────────────────────────────────────
@@ -7,98 +6,93 @@ const formData = {
   selectedFuture:      null,
   selectedFutureLabel: '',
   signals:             '',
-  aiGrowth:            25,
-  aiCollapse:          25,
-  aiTransformation:    25,
-  aiConstraint:        25,
+  aiGrowth:            0,
+  aiCollapse:          0,
+  aiTransformation:    0,
+  aiConstraint:        0,
   questionCategory:    '',
   dynamicQuestion:     '',
   reflection:          '',
   additionalInfo:      ''
 };
 
-let sliderValues = [25, 25, 25, 25];
+let previousPage  = 1;
+let carouselIndex = 0;
 
-// ─── Content: SSP deep dives ──────────────────────────────────────────────
-const modalContent = {
+// ─── SSP data ──────────────────────────────────────────────────────────────
+const sspIds = ['ssp1', 'ssp2', 'ssp3', 'ssp4', 'ssp5'];
+
+const sspData = {
   ssp1: {
-    title:    'SSP1: Sustainability',
+    label:    'SSP1: Sustainability',
     subtitle: 'Taking the Green Road',
-    body: `
+    color:    '#3d7a5a',
+    narrative: `
       <p>[Placeholder: In this future, the world shifts toward sustainable development. Societies globally prioritise environmental stewardship alongside human well-being. Inequalities reduce. Consumption patterns shift towards lower resource intensity.]</p>
       <p>[Placeholder: Fossil fuels are phased out rapidly. Education, healthcare, and living standards improve across the board. International cooperation is strong — global institutions hold and function.]</p>
       <p>[Placeholder: Climate impacts, while still present due to historical emissions, are managed through both ambitious mitigation and proactive adaptation. This pathway requires significant global political will but represents a hopeful and coherent trajectory.]</p>
-      <div class="modal-meta">
+      <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Low</span>
         <span><strong>Cooperation:</strong> High</span>
         <span><strong>Emissions:</strong> Rapidly declining</span>
-      </div>
-    `
+      </div>`
   },
   ssp2: {
-    title:    'SSP2: Middle of the Road',
+    label:    'SSP2: Middle of the Road',
     subtitle: 'A World of Gradual Progress',
-    body: `
+    color:    '#6688aa',
+    narrative: `
       <p>[Placeholder: In this future, social, economic, and technological trends do not shift markedly from historical patterns. Development and income growth proceed unevenly. Some countries make progress on sustainability; others lag behind.]</p>
       <p>[Placeholder: Global emissions follow a moderate path — not the catastrophic worst case, but far from the ambitious best. Environmental policies improve slowly. Technology advances, but deployment is uneven.]</p>
       <p>[Placeholder: Climate impacts grow and are partially managed. This is often called the 'business as usual' pathway — a continuation of current trends without major transformation in either direction.]</p>
-      <div class="modal-meta">
+      <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Medium</span>
         <span><strong>Cooperation:</strong> Moderate</span>
         <span><strong>Emissions:</strong> Slowly declining</span>
-      </div>
-    `
+      </div>`
   },
   ssp3: {
-    title:    'SSP3: Regional Rivalry',
+    label:    'SSP3: Regional Rivalry',
     subtitle: 'A Rocky Road',
-    body: `
+    color:    '#bf5c38',
+    narrative: `
       <p>[Placeholder: In this future, resurgent nationalism and regional conflicts push countries inward. Global trade declines. Investment in education and technology slows. Governments focus on domestic security and food production at the expense of environmental goals.]</p>
       <p>[Placeholder: Development is slow and deeply unequal. Fossil fuel use continues strongly in many regions. Climate policies are weak or non-existent. Emissions remain high.]</p>
       <p>[Placeholder: Climate impacts are severe and unevenly distributed. Vulnerable regions face extreme consequences with little international support. Adaptation becomes the primary — and often insufficient — strategy.]</p>
-      <div class="modal-meta">
+      <div class="carousel-meta">
         <span><strong>Climate impact:</strong> High</span>
         <span><strong>Cooperation:</strong> Low</span>
         <span><strong>Emissions:</strong> Persistently high</span>
-      </div>
-    `
+      </div>`
   },
   ssp4: {
-    title:    'SSP4: Inequality',
+    label:    'SSP4: Inequality',
     subtitle: 'A Road Divided',
-    body: `
+    color:    '#7a6aaa',
+    narrative: `
       <p>[Placeholder: In this future, power becomes increasingly concentrated in the hands of a global elite. A well-educated, internationally connected minority drives rapid technological development and benefits from low-emissions energy systems.]</p>
       <p>[Placeholder: Large populations — particularly in the global south — remain dependent on fossil fuels, low-skilled labour, and poorly governed states. International cooperation exists but primarily serves powerful interests.]</p>
       <p>[Placeholder: Climate impacts diverge sharply. Wealthy regions invest in adaptation and survive. Poorer regions face compounding crises with minimal resources to respond. This is a world of islands in a rising tide.]</p>
-      <div class="modal-meta">
+      <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Mixed</span>
         <span><strong>Cooperation:</strong> Stratified</span>
         <span><strong>Emissions:</strong> Uneven</span>
-      </div>
-    `
+      </div>`
   },
   ssp5: {
-    title:    'SSP5: Fossil-fueled Development',
+    label:    'SSP5: Fossil-fueled Development',
     subtitle: 'Taking the Highway',
-    body: `
+    color:    '#aa3838',
+    narrative: `
       <p>[Placeholder: In this future, the world bets everything on technological solutions and economic growth. Fossil fuel development accelerates massively. Energy is abundant and cheap. GDP grows strongly across much of the world.]</p>
       <p>[Placeholder: Human development improves in many ways — health, income, education — but at the cost of extreme carbon emissions. The assumption is that future technology (carbon capture, geoengineering) will manage the consequences.]</p>
       <p>[Placeholder: Climate impacts are the most severe of any pathway. Temperatures rise significantly. The gamble on future technology is a high-stakes bet that may not pay off. This is the highway — fast, powerful, and with no clear off-ramp.]</p>
-      <div class="modal-meta">
+      <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Very high</span>
         <span><strong>Cooperation:</strong> Moderate</span>
         <span><strong>Emissions:</strong> Very high</span>
-      </div>
-    `
+      </div>`
   }
-};
-
-const futureLabels = {
-  ssp1: 'SSP1: Sustainability',
-  ssp2: 'SSP2: Middle of the Road',
-  ssp3: 'SSP3: Regional Rivalry',
-  ssp4: 'SSP4: Inequality',
-  ssp5: 'SSP5: Fossil-fueled Development'
 };
 
 const aiScenarioLabels = ['AI Growth', 'AI Collapse', 'AI Transformation', 'AI Constraint'];
@@ -106,25 +100,27 @@ const aiScenarioLabels = ['AI Growth', 'AI Collapse', 'AI Transformation', 'AI C
 // ─── Navigation ───────────────────────────────────────────────────────────
 function goToPage(n) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + n).classList.add('active');
+  const pageId = (n === 'about') ? 'page-about' : 'page-' + n;
+  document.getElementById(pageId).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
 
-  const nav = document.getElementById('progress-nav');
-  if (n <= 4) {
-    nav.style.display = 'block';
-    document.querySelectorAll('.progress-step').forEach((el, i) => {
-      el.classList.toggle('active', i + 1 === n);
+  const bc = document.getElementById('breadcrumb');
+  if (typeof n === 'number' && n >= 2 && n <= 5) {
+    bc.style.display = 'block';
+    document.querySelectorAll('.bc-step').forEach(el => {
+      const step = parseInt(el.dataset.step);
+      el.classList.toggle('active', step === n);
+      el.classList.toggle('done',   step < n);
     });
   } else {
-    nav.style.display = 'none';
+    bc.style.display = 'none';
   }
 }
 
 function goNext(fromPage) {
   if (fromPage === 1) {
     if (!formData.selectedFuture) return;
-    const ctx = document.getElementById('page2-context');
-    ctx.textContent = 'You chose: ' + formData.selectedFutureLabel;
+    document.getElementById('page2-context').textContent = 'You selected: ' + formData.selectedFutureLabel;
     goToPage(2);
 
   } else if (fromPage === 2) {
@@ -132,202 +128,212 @@ function goNext(fromPage) {
     goToPage(3);
 
   } else if (fromPage === 3) {
-    formData.aiGrowth        = sliderValues[0];
-    formData.aiCollapse      = sliderValues[1];
-    formData.aiTransformation = sliderValues[2];
-    formData.aiConstraint    = sliderValues[3];
+    const vals = [0,1,2,3].map(i => parseInt(document.getElementById('input-' + i).value) || 0);
+    if (vals.reduce((a,b) => a+b, 0) !== 100) return;
+    formData.aiGrowth         = vals[0];
+    formData.aiCollapse       = vals[1];
+    formData.aiTransformation = vals[2];
+    formData.aiConstraint     = vals[3];
     setPage4Question();
     goToPage(4);
 
   } else if (fromPage === 4) {
     formData.reflection = document.getElementById('reflection-input').value.trim();
-    populateReview();
+    resetStep5();
     goToPage(5);
-
-  } else if (fromPage === 5) {
-    goToPage(6);
   }
 }
 
 function goBack(fromPage) {
-  goToPage(fromPage - 1);
+  if (fromPage === 'about') {
+    goToPage(previousPage);
+  } else {
+    goToPage(fromPage - 1);
+  }
 }
 
-// ─── Page 1: Future selection ─────────────────────────────────────────────
+function goToAbout() {
+  const active = document.querySelector('.page.active');
+  if (active && active.id !== 'page-about') {
+    const num = active.id.replace('page-', '');
+    previousPage = isNaN(num) ? 1 : parseInt(num);
+  }
+  goToPage('about');
+}
+
+// ─── Page 1: Card click & carousel ────────────────────────────────────────
 function handleCardClick(id) {
-  document.querySelectorAll('.future-card').forEach(c => c.classList.remove('selected'));
-  document.querySelector('[data-id="' + id + '"]').classList.add('selected');
-
-  formData.selectedFuture      = id;
-  formData.selectedFutureLabel = futureLabels[id];
-
-  document.getElementById('btn-next-1').disabled = false;
-  document.getElementById('hint-1').textContent  = 'You\'ve selected ' + futureLabels[id] + '. Click Next when ready.';
-
-  openModal(id);
+  carouselIndex = sspIds.indexOf(id);
+  openCarousel();
 }
 
-// ─── Modal ────────────────────────────────────────────────────────────────
-function openModal(id) {
-  const c = modalContent[id];
-  document.getElementById('modal-body').innerHTML =
-    '<h2>' + c.title + '</h2>' +
-    '<p class="modal-subtitle">' + c.subtitle + '</p>' +
-    c.body;
-
-  const note = document.getElementById('modal-selected-note');
-  note.textContent = (formData.selectedFuture === id)
-    ? '✓ You have selected this future'
-    : '';
-
-  document.getElementById('modal-overlay').classList.add('open');
+function openCarousel() {
+  renderCarouselSlide();
+  document.getElementById('carousel-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
+function closeCarousel() {
+  document.getElementById('carousel-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
 
+function carouselPrev() {
+  carouselIndex = (carouselIndex - 1 + 5) % 5;
+  renderCarouselSlide();
+}
+
+function carouselNext() {
+  carouselIndex = (carouselIndex + 1) % 5;
+  renderCarouselSlide();
+}
+
+function renderCarouselSlide() {
+  const id  = sspIds[carouselIndex];
+  const ssp = sspData[id];
+
+  document.getElementById('carousel-color').style.background = ssp.color;
+  document.getElementById('carousel-content').innerHTML =
+    '<h2>' + ssp.label + '</h2>' +
+    '<p class="carousel-subtitle">' + ssp.subtitle + '</p>' +
+    ssp.narrative;
+  document.getElementById('carousel-counter').textContent = (carouselIndex + 1) + ' / 5';
+
+  const selectBtn = document.getElementById('carousel-select-btn');
+  selectBtn.textContent = (formData.selectedFuture === id)
+    ? 'Selected ✓'
+    : 'Select this future →';
+}
+
+function selectFromCarousel() {
+  const id  = sspIds[carouselIndex];
+  const ssp = sspData[id];
+
+  formData.selectedFuture      = id;
+  formData.selectedFutureLabel = ssp.label;
+
+  document.querySelectorAll('.future-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('[data-id="' + id + '"]').classList.add('selected');
+
+  document.getElementById('start-status').textContent = 'You think we are in ' + ssp.label + '.';
+  document.getElementById('btn-add-predictions').disabled = false;
+
+  document.getElementById('carousel-select-btn').textContent = 'Selected ✓';
+}
+
+// Keyboard navigation for carousel
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeModal();
+  if (!document.getElementById('carousel-overlay').classList.contains('open')) return;
+  if (e.key === 'Escape')      closeCarousel();
+  if (e.key === 'ArrowLeft')   carouselPrev();
+  if (e.key === 'ArrowRight')  carouselNext();
 });
 
-// ─── Page 3: Sliders ──────────────────────────────────────────────────────
-function updateSliders(changedIndex, rawVal) {
-  const newVal       = parseInt(rawVal, 10);
-  const remaining    = 100 - newVal;
-  const others       = [0, 1, 2, 3].filter(i => i !== changedIndex);
-  const currentOtherSum = others.reduce((sum, i) => sum + sliderValues[i], 0);
+// Touch swipe for carousel
+(function() {
+  let startX = null;
+  const overlay = document.getElementById('carousel-overlay');
+  overlay.addEventListener('touchstart', function(e) {
+    startX = e.touches[0].clientX;
+  }, { passive: true });
+  overlay.addEventListener('touchend', function(e) {
+    if (startX === null) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) dx < 0 ? carouselNext() : carouselPrev();
+    startX = null;
+  }, { passive: true });
+})();
 
-  if (currentOtherSum === 0) {
-    // All other sliders at 0 — distribute remaining equally
-    const base  = Math.floor(remaining / 3);
-    const extra = remaining - base * 3;
-    others.forEach((i, idx) => {
-      sliderValues[i] = base + (idx === 0 ? extra : 0);
-    });
+// ─── Page 3: Number inputs & total ────────────────────────────────────────
+function updateTotal() {
+  const vals  = [0,1,2,3].map(i => parseInt(document.getElementById('input-' + i).value) || 0);
+  const total = vals.reduce((a,b) => a+b, 0);
+
+  document.getElementById('total-val').textContent = total;
+
+  const bar  = document.getElementById('total-bar');
+  const note = document.getElementById('total-note');
+  const btn  = document.getElementById('btn-next-3');
+
+  if (total === 100) {
+    bar.className  = 'total-bar done';
+    note.textContent = '✓';
+    btn.disabled   = false;
+  } else if (total > 100) {
+    bar.className  = 'total-bar over';
+    note.textContent = '— over 100%, adjust your values';
+    btn.disabled   = true;
   } else {
-    // Distribute proportionally, last one absorbs rounding
-    let assigned = 0;
-    others.forEach((i, idx) => {
-      if (idx === others.length - 1) {
-        sliderValues[i] = Math.max(0, remaining - assigned);
-      } else {
-        const val = Math.round(remaining * (sliderValues[i] / currentOtherSum));
-        sliderValues[i] = val;
-        assigned += val;
-      }
-    });
+    bar.className  = 'total-bar';
+    note.textContent = '— must reach 100%';
+    btn.disabled   = true;
   }
-
-  sliderValues[changedIndex] = newVal;
-
-  // Verify total is exactly 100 and correct rounding drift if needed
-  const total = sliderValues.reduce((a, b) => a + b, 0);
-  if (total !== 100) {
-    const drift = 100 - total;
-    // Apply drift to the non-changed slider with the highest value
-    const target = others.reduce((best, i) =>
-      sliderValues[i] > sliderValues[best] ? i : best, others[0]);
-    sliderValues[target] = Math.max(0, sliderValues[target] + drift);
-  }
-
-  // Sync all slider UI
-  [0, 1, 2, 3].forEach(i => {
-    document.getElementById('slider-' + i).value        = sliderValues[i];
-    document.getElementById('val-' + i).textContent     = sliderValues[i] + '%';
-  });
-
-  const finalTotal = sliderValues.reduce((a, b) => a + b, 0);
-  document.getElementById('total-val').textContent = finalTotal;
-  document.getElementById('total-bar').classList.toggle('over', finalTotal !== 100);
 }
 
 // ─── Page 4: Dynamic question ─────────────────────────────────────────────
 function setPage4Question() {
-  const vals   = sliderValues.slice();
-  const sorted = vals
-    .map((v, i) => ({ v, i }))
-    .sort((a, b) => b.v - a.v);
-
+  const vals   = [formData.aiGrowth, formData.aiCollapse, formData.aiTransformation, formData.aiConstraint];
+  const sorted = vals.map((v,i) => ({v,i})).sort((a,b) => b.v - a.v);
   const spread = sorted[0].v - sorted[sorted.length - 1].v;
   const future = formData.selectedFutureLabel;
 
   let category, question;
 
   if (spread <= 10) {
-    // All four scenarios within 10% of each other
     category = 'equal';
     question = 'You predict that all of these futures are equally possible. What could accelerate change towards the future you prefer?';
 
   } else if (sorted[0].v > 55) {
-    // One clear winner above 55%
     category = 'winner';
-    const winnerLabel = aiScenarioLabels[sorted[0].i];
-    question = 'You predict that <em>' + future + ' + ' + winnerLabel + '</em> is most likely. What do you think could accelerate or reverse this future direction?';
+    question  = 'You predict that <em>' + future + ' + ' + aiScenarioLabels[sorted[0].i] + '</em> is most likely. What do you think could accelerate or reverse this future direction?';
 
-  } else if (
-    Math.abs(sorted[0].v - sorted[1].v) <= 10 &&
-    sorted[0].v > 35 &&
-    sorted[1].v > 35
-  ) {
-    // Two-way tie: top two within 10%, both above 35%
+  } else if (Math.abs(sorted[0].v - sorted[1].v) <= 10 && sorted[0].v > 35 && sorted[1].v > 35) {
     category = 'tie';
-    const label1 = aiScenarioLabels[sorted[0].i];
-    const label2 = aiScenarioLabels[sorted[1].i];
-    question = 'You predict that <em>' + future + ' + ' + label1 + '</em> or <em>' + label2 + '</em> are equally possible. What do you think could accelerate towards the future you prefer?';
+    question  = 'You predict that <em>' + future + ' + ' + aiScenarioLabels[sorted[0].i] + '</em> or <em>' + aiScenarioLabels[sorted[1].i] + '</em> are equally possible. What do you think could accelerate towards the future you prefer?';
 
   } else {
-    // Default: treat highest as the prediction
     category = 'winner';
-    const winnerLabel = aiScenarioLabels[sorted[0].i];
-    question = 'You predict that <em>' + future + ' + ' + winnerLabel + '</em> is most likely. What do you think could accelerate or reverse this future direction?';
+    question  = 'You predict that <em>' + future + ' + ' + aiScenarioLabels[sorted[0].i] + '</em> is most likely. What do you think could accelerate or reverse this future direction?';
   }
 
   formData.questionCategory = category;
   formData.dynamicQuestion  = question;
-
   document.getElementById('page4-question').innerHTML = question;
 }
 
-// ─── Page 5: Review ───────────────────────────────────────────────────────
-function populateReview() {
-  document.getElementById('review-future').textContent         = formData.selectedFutureLabel || '—';
-  document.getElementById('review-signals').textContent        = formData.signals    || '(no response)';
-  document.getElementById('review-growth').textContent         = sliderValues[0] + '%';
-  document.getElementById('review-collapse').textContent       = sliderValues[1] + '%';
-  document.getElementById('review-transformation').textContent = sliderValues[2] + '%';
-  document.getElementById('review-constraint').textContent     = sliderValues[3] + '%';
-  document.getElementById('review-reflection').textContent     = formData.reflection || '(no response)';
+// ─── Page 5: Two-step submit ───────────────────────────────────────────────
+function resetStep5() {
+  document.getElementById('page-5-step1').style.display = 'block';
+  document.getElementById('page-5-step2').style.display = 'none';
 }
 
-// ─── Page 6 & 7: Submit ───────────────────────────────────────────────────
+function showStep2() {
+  document.getElementById('page-5-step1').style.display = 'none';
+  document.getElementById('page-5-step2').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
 function submitForm(includeOptional) {
-  if (includeOptional) {
-    formData.additionalInfo = document.getElementById('optional-input').value.trim();
-  } else {
-    formData.additionalInfo = '';
-  }
+  formData.additionalInfo = includeOptional
+    ? document.getElementById('optional-input').value.trim()
+    : '';
 
   const payload = {
     selectedFuture:   formData.selectedFutureLabel,
     signals:          formData.signals,
-    aiGrowth:         sliderValues[0],
-    aiCollapse:       sliderValues[1],
-    aiTransformation: sliderValues[2],
-    aiConstraint:     sliderValues[3],
+    aiGrowth:         formData.aiGrowth,
+    aiCollapse:       formData.aiCollapse,
+    aiTransformation: formData.aiTransformation,
+    aiConstraint:     formData.aiConstraint,
     questionCategory: formData.questionCategory,
     reflection:       formData.reflection,
     additionalInfo:   formData.additionalInfo
   };
 
   if (SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    const params = new URLSearchParams(payload);
-    fetch(SCRIPT_URL + '?' + params.toString()).catch(function() {
-      // Silent fail — still show thank you page
-    });
+    fetch(SCRIPT_URL + '?' + new URLSearchParams(payload).toString()).catch(function() {});
   }
 
-  goToPage(7);
+  previousPage = 5;
+  goToPage('about');
 }
