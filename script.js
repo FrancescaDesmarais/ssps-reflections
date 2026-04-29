@@ -17,6 +17,7 @@ const formData = {
 };
 
 let previousPage  = 1;
+let furthestPage  = 1;
 let carouselIndex = 0;
 let hasSubmitted  = false;
 
@@ -98,6 +99,21 @@ const sspData = {
 
 const aiScenarioLabels = ['AI Growth', 'AI Collapse', 'AI Transformation', 'AI Constraint'];
 
+// ─── Shuffle ───────────────────────────────────────────────────────────────
+function shuffleChildren(el) {
+  const items = Array.from(el.children);
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  items.forEach(item => el.appendChild(item));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  shuffleChildren(document.querySelector('.futures-grid'));
+  shuffleChildren(document.querySelector('.ai-grid'));
+});
+
 // ─── Navigation ───────────────────────────────────────────────────────────
 function goToPage(n) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -105,15 +121,18 @@ function goToPage(n) {
   document.getElementById(pageId).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
 
+  if (typeof n === 'number') furthestPage = Math.max(furthestPage, n);
+
   const bc = document.getElementById('breadcrumb');
   if (typeof n === 'number' && n >= 2 && n <= 5) {
     bc.style.display = 'block';
     document.querySelectorAll('.bc-step').forEach(el => {
       const step = parseInt(el.dataset.step);
-      const isDone = step < n;
-      el.classList.toggle('active', step === n);
-      el.classList.toggle('done',   isDone);
-      el.onclick = isDone ? function() { goToPage(step); } : null;
+      const isActive    = step === n;
+      const isCompleted = !isActive && step <= furthestPage;
+      el.classList.toggle('active', isActive);
+      el.classList.toggle('done',   isCompleted);
+      el.onclick = isCompleted ? function() { goToPage(step); } : null;
     });
   } else {
     bc.style.display = 'none';
