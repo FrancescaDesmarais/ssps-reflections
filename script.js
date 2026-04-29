@@ -1,6 +1,6 @@
 // ─── Config ───────────────────────────────────────────────────────────────
 // Replace with your deployed Google Apps Script web app URL
-const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykLGfLi1R6qo2C6F-M7PdRikXDuVAvvcyfngysf1z0qncfXn_7hSq__9HwO2DJmDl0/exec';
 
 // ─── State ────────────────────────────────────────────────────────────────
 const formData = {
@@ -322,17 +322,9 @@ function submitForm(includeOptional) {
     additionalInfo:   formData.additionalInfo
   };
 
-  // Send to Google Sheets. mode: 'no-cors' means we can't read the response
-  // but the data goes through. We navigate to thank you regardless.
-  const params = new URLSearchParams();
-  params.append('data', JSON.stringify(payload));
-
   if (SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
-    fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode:   'no-cors',
-      body:   params
-    }).catch(function() {
+    const params = new URLSearchParams(payload);
+    fetch(SCRIPT_URL + '?' + params.toString()).catch(function() {
       // Silent fail — still show thank you page
     });
   }
