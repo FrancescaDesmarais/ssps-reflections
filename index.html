@@ -36,50 +36,45 @@
     <div class="page-inner">
 
       <h1 class="start-title">What future are we in?</h1>
-      <p class="start-sub">In 2014 a group of scientists developed five future scenarios for our world. Now, over a decade on — which future pathway do you think we are on? Explore the futures and then choose one to start your own journey and contribute your own predictions…</p>
+      <p class="start-sub">In 2014 a group of scientists developed five future scenarios for our world. Now, a decade on—which future pathway do you think we are on? Click on the futures to explore the projected worlds and select the one that most closely fits with the world trajectory you see today.</p>
 
       <div class="futures-grid">
 
         <div class="future-card" data-id="ssp1" onclick="handleCardClick('ssp1')">
-          <div class="card-color" style="background:#3d7a5a;"></div>
+          <div class="card-color" style="background:#1565A0;"></div>
           <div class="card-body">
-            <div class="card-number">SSP1</div>
             <h2 class="card-title">Sustainability</h2>
           </div>
           <div class="card-selected-badge">Selected ✓</div>
         </div>
 
         <div class="future-card" data-id="ssp2" onclick="handleCardClick('ssp2')">
-          <div class="card-color" style="background:#6688aa;"></div>
+          <div class="card-color" style="background:#4A90C4;"></div>
           <div class="card-body">
-            <div class="card-number">SSP2</div>
             <h2 class="card-title">Middle of the Road</h2>
           </div>
           <div class="card-selected-badge">Selected ✓</div>
         </div>
 
         <div class="future-card" data-id="ssp3" onclick="handleCardClick('ssp3')">
-          <div class="card-color" style="background:#bf5c38;"></div>
+          <div class="card-color" style="background:#BF5A1E;"></div>
           <div class="card-body">
-            <div class="card-number">SSP3</div>
             <h2 class="card-title">Regional Rivalry</h2>
           </div>
           <div class="card-selected-badge">Selected ✓</div>
         </div>
 
         <div class="future-card" data-id="ssp4" onclick="handleCardClick('ssp4')">
-          <div class="card-color" style="background:#7a6aaa;"></div>
+          <div class="card-color" style="background:#C49030;"></div>
           <div class="card-body">
-            <div class="card-number">SSP4</div>
             <h2 class="card-title">Inequality</h2>
           </div>
           <div class="card-selected-badge">Selected ✓</div>
         </div>
 
         <div class="future-card" data-id="ssp5" onclick="handleCardClick('ssp5')">
-          <div class="card-color" style="background:#aa3838;"></div>
+          <div class="card-color" style="background:#971818;"></div>
           <div class="card-body">
-            <div class="card-number">SSP5</div>
             <h2 class="card-title">Fossil-fueled Development</h2>
           </div>
           <div class="card-selected-badge">Selected ✓</div>
@@ -88,8 +83,8 @@
       </div>
 
       <div class="start-footer">
-        <p class="start-status" id="start-status">You have not selected a future.</p>
-        <button class="btn-primary" id="btn-add-predictions" onclick="goNext(1)" disabled>Add Predictions →</button>
+        <p class="start-status" id="start-status">You haven't chosen a pathway yet.</p>
+        <button class="btn-primary" id="btn-add-predictions" onclick="goNext(1)" disabled>Next →</button>
       </div>
 
     </div>
@@ -101,8 +96,8 @@
   <section id="page-2" class="page">
     <div class="page-inner">
       <h4 class="selected-label" id="page2-context"></h4>
-      <h1>What signals are you seeing that point towards this future?</h1>
-      <p class="lead">[Placeholder: Share what you're observing in the world — news events, data trends, conversations, or shifts in behaviour — that makes this future feel most likely to you.]</p>
+      <h1>What signals do you see that point towards this future?</h1>
+      <p class="lead">Share one or two things that you've observed—news events, data, conversations, shifts in behaviour—that make this future pathway feel most likely for you.</p>
       <textarea id="signals-input" class="text-area" placeholder="What are you seeing..."></textarea>
       <div class="page-footer">
         <button class="btn-secondary" onclick="goBack(2)">← Back</button>
@@ -117,7 +112,7 @@
   <section id="page-3" class="page">
     <div class="page-inner">
       <h1>How will AI change this future?</h1>
-      <p class="lead">[Placeholder: The SSPs were written before the AI revolution. Below are four ways AI could reshape whichever future we're heading towards. Enter your prediction for each — they must total 100%.]</p>
+      <p class="lead">These future scenarios were written before the AI breakthroughs of the past few years. Below are four ways AI could reshape this future pathway. Enter your prediction for each—they must total 100%.</p>
 
       <div class="ai-grid">
 
@@ -180,7 +175,7 @@
   <section id="page-4" class="page">
     <div class="page-inner">
       <h1 id="page4-question"></h1>
-      <p class="lead">[Placeholder: Share what comes to mind — forces, policies, technologies, social movements, or events that could shape or shift this trajectory.]</p>
+      <p class="lead">Share what comes to mind—policies, technologies, social movements, or events that could shape or shift this trajectory.</p>
       <textarea id="reflection-input" class="text-area" placeholder="Your reflection..."></textarea>
       <div class="page-footer">
         <button class="btn-secondary" onclick="goBack(4)">← Back</button>
@@ -196,8 +191,8 @@
 
     <div id="page-5-step1">
       <div class="page-inner page-inner--narrow">
-        <h1>Thank you for your predictions.</h1>
-        <p class="lead">[Placeholder: A short note from Francesca. Thank you for taking part in this project. Your perspective helps build a richer picture of how people understand the world's trajectory. If you'd like to review or edit any of your answers before submitting, go back now.]</p>
+        <h1>Thank you.</h1>
+        <p class="lead">Your perspective is a unique viewpoint of our world. Thanks for taking the time to share it with the project. By clicking 'submit' your answers will be anonymously shared and aggregated.</p>
         <div class="page-footer">
           <button class="btn-secondary" onclick="goBack(5)">← Back &amp; Edit</button>
           <button class="btn-primary" onclick="showStep2()">Submit →</button>
@@ -208,7 +203,7 @@
     <div id="page-5-step2">
       <div class="page-inner page-inner--narrow">
         <h1>Anything else to add?</h1>
-        <p class="lead">[Placeholder: If you'd like to share more context — a caveat, a hunch, or a thought that didn't fit earlier — you can do so here. This is entirely optional.]</p>
+        <p class="lead">If you'd like to share more context—a caveat, a hunch, or a thought that didn't fit earlier—you can do so here. This is entirely optional.</p>
         <textarea id="optional-input" class="text-area" placeholder="Optional: share anything else..."></textarea>
         <div class="page-footer">
           <button class="btn-secondary" onclick="submitForm(false)">Skip →</button>
@@ -230,25 +225,27 @@
 
         <div class="about-card">
           <h3>The project</h3>
-          <p>[Placeholder: This form is part of an ongoing exploration of how people perceive the Shared Socioeconomic Pathways — and how AI might reshape climate futures. Created by Francesca Desmarais.]</p>
+          <p>This is a small, personal project built by Francesca Desmarais. Francesca has been building participatory experiences for people to explore the Shared Socioeconomic Pathways and use these scenarios in creative, foresight projects. Between a pandemic, developments in AI, wars, and record heat—there's been a lot going on the past few years. In the vein of participation, this quiz is a small sense-check on how people are interpreting the world events happening, through the long-term lens of the climate crisis.</p>
+          <p>It will stay open until a critical mass of respondents. Please share.</p>
+          <p>Follow Francesca Desmarais to see when the aggregated results are shared back.</p>
           <a href="https://www.linkedin.com/in/francescadesmarais" target="_blank" rel="noopener" class="about-link">Francesca on LinkedIn →</a>
         </div>
 
         <div class="about-card">
-          <h3>SSP References</h3>
+          <h3>The SSPs</h3>
+          <p>The Shared Socioeconomic Pathways are five scenarios that cover five different development pathways global society could take towards 2100. They are used as inputs to global climate models and as part of the IPCC assessments.</p>
           <ul class="about-list">
-            <li><a href="#" class="about-link">[Placeholder: O'Neill et al. (2017) — The roads ahead: Narratives for shared socioeconomic pathways]</a></li>
-            <li><a href="#" class="about-link">[Placeholder: Riahi et al. (2017) — The Shared Socioeconomic Pathways and their energy, land use, and GHG emissions implications]</a></li>
-            <li><a href="#" class="about-link">[Placeholder: Kriegler et al. (2012) — The need for and use of socioeconomic scenarios for climate change analysis]</a></li>
+            <li><a href="https://korbel.du.edu/wp-content/uploads/2025/04/The-Roads-Ahead.pdf" target="_blank" rel="noopener" class="about-link">Read the original paper →</a></li>
+            <li><a href="https://climatescenarios.org/primer/" target="_blank" rel="noopener" class="about-link">A great resource on climate change scenarios →</a></li>
+            <li><a href="https://ssp.apps.ece.iiasa.ac.at/" target="_blank" rel="noopener" class="about-link">Get nerdy with the SSPs →</a></li>
           </ul>
         </div>
 
         <div class="about-card">
-          <h3>Get involved in climate action</h3>
+          <h3>A few (of the many!) awesome climate organisations to check out</h3>
           <ul class="about-list">
-            <li><a href="#" class="about-link">[Placeholder: Climate organisation 1]</a></li>
-            <li><a href="#" class="about-link">[Placeholder: Climate organisation 2]</a></li>
-            <li><a href="#" class="about-link">[Placeholder: Climate organisation 3]</a></li>
+            <li><a href="https://careclimatechange.org/" target="_blank" rel="noopener" class="about-link">CARE Climate Justice Center →</a></li>
+            <li><a href="https://heatmap.news/" target="_blank" rel="noopener" class="about-link">Heatmap News →</a></li>
           </ul>
         </div>
 

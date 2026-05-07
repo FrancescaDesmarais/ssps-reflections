@@ -26,13 +26,14 @@ const sspIds = ['ssp1', 'ssp2', 'ssp3', 'ssp4', 'ssp5'];
 
 const sspData = {
   ssp1: {
-    label:    'SSP1: Sustainability',
+    label:    'Sustainability',
     subtitle: 'Taking the Green Road',
-    color:    '#3d7a5a',
+    color:    '#1565A0',
+    colorDark: '#0D4A7A',
     narrative: `
-      <p>[Placeholder: In this future, the world shifts toward sustainable development. Societies globally prioritise environmental stewardship alongside human well-being. Inequalities reduce. Consumption patterns shift towards lower resource intensity.]</p>
-      <p>[Placeholder: Fossil fuels are phased out rapidly. Education, healthcare, and living standards improve across the board. International cooperation is strong — global institutions hold and function.]</p>
-      <p>[Placeholder: Climate impacts, while still present due to historical emissions, are managed through both ambitious mitigation and proactive adaptation. This pathway requires significant global political will but represents a hopeful and coherent trajectory.]</p>
+      <p>In this future, the world shifts toward sustainable development. Societies globally prioritise environmental stewardship alongside human well-being. Inequalities reduce. Consumption patterns shift towards lower resource intensity.</p>
+      <p>Fossil fuels are phased out rapidly. Education, healthcare, and living standards improve across the board. International cooperation is strong — global institutions hold and function.</p>
+      <p>Climate impacts, while still present due to historical emissions, are managed through both ambitious mitigation and proactive adaptation. This pathway requires significant global political will but represents a hopeful and coherent trajectory.</p>
       <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Low</span>
         <span><strong>Cooperation:</strong> High</span>
@@ -40,13 +41,14 @@ const sspData = {
       </div>`
   },
   ssp2: {
-    label:    'SSP2: Middle of the Road',
+    label:    'Middle of the Road',
     subtitle: 'A World of Gradual Progress',
-    color:    '#6688aa',
+    color:    '#4A90C4',
+    colorDark: '#1565A0',
     narrative: `
-      <p>[Placeholder: In this future, social, economic, and technological trends do not shift markedly from historical patterns. Development and income growth proceed unevenly. Some countries make progress on sustainability; others lag behind.]</p>
-      <p>[Placeholder: Global emissions follow a moderate path — not the catastrophic worst case, but far from the ambitious best. Environmental policies improve slowly. Technology advances, but deployment is uneven.]</p>
-      <p>[Placeholder: Climate impacts grow and are partially managed. This is often called the 'business as usual' pathway — a continuation of current trends without major transformation in either direction.]</p>
+      <p>In this future, social, economic, and technological trends do not shift markedly from historical patterns. Development and income growth proceed unevenly. Some countries make progress on sustainability; others lag behind.</p>
+      <p>Global emissions follow a moderate path — not the catastrophic worst case, but far from the ambitious best. Environmental policies improve slowly. Technology advances, but deployment is uneven.</p>
+      <p>Climate impacts grow and are partially managed. This is often called the 'business as usual' pathway — a continuation of current trends without major transformation in either direction.</p>
       <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Medium</span>
         <span><strong>Cooperation:</strong> Moderate</span>
@@ -54,13 +56,14 @@ const sspData = {
       </div>`
   },
   ssp3: {
-    label:    'SSP3: Regional Rivalry',
+    label:    'Regional Rivalry',
     subtitle: 'A Rocky Road',
-    color:    '#bf5c38',
+    color:    '#BF5A1E',
+    colorDark: '#8C3F0F',
     narrative: `
-      <p>[Placeholder: In this future, resurgent nationalism and regional conflicts push countries inward. Global trade declines. Investment in education and technology slows. Governments focus on domestic security and food production at the expense of environmental goals.]</p>
-      <p>[Placeholder: Development is slow and deeply unequal. Fossil fuel use continues strongly in many regions. Climate policies are weak or non-existent. Emissions remain high.]</p>
-      <p>[Placeholder: Climate impacts are severe and unevenly distributed. Vulnerable regions face extreme consequences with little international support. Adaptation becomes the primary — and often insufficient — strategy.]</p>
+      <p>In this future, resurgent nationalism and regional conflicts push countries inward. Global trade declines. Investment in education and technology slows. Governments focus on domestic security and food production at the expense of environmental goals.</p>
+      <p>Development is slow and deeply unequal. Fossil fuel use continues strongly in many regions. Climate policies are weak or non-existent. Emissions remain high.</p>
+      <p>Climate impacts are severe and unevenly distributed. Vulnerable regions face extreme consequences with little international support. Adaptation becomes the primary — and often insufficient — strategy.</p>
       <div class="carousel-meta">
         <span><strong>Climate impact:</strong> High</span>
         <span><strong>Cooperation:</strong> Low</span>
@@ -68,13 +71,14 @@ const sspData = {
       </div>`
   },
   ssp4: {
-    label:    'SSP4: Inequality',
+    label:    'Inequality',
     subtitle: 'A Road Divided',
-    color:    '#7a6aaa',
+    color:    '#C49030',
+    colorDark: '#8C6318',
     narrative: `
-      <p>[Placeholder: In this future, power becomes increasingly concentrated in the hands of a global elite. A well-educated, internationally connected minority drives rapid technological development and benefits from low-emissions energy systems.]</p>
-      <p>[Placeholder: Large populations — particularly in the global south — remain dependent on fossil fuels, low-skilled labour, and poorly governed states. International cooperation exists but primarily serves powerful interests.]</p>
-      <p>[Placeholder: Climate impacts diverge sharply. Wealthy regions invest in adaptation and survive. Poorer regions face compounding crises with minimal resources to respond. This is a world of islands in a rising tide.]</p>
+      <p>In this future, power becomes increasingly concentrated in the hands of a global elite. A well-educated, internationally connected minority drives rapid technological development and benefits from low-emissions energy systems.</p>
+      <p>Large populations — particularly in the global south — remain dependent on fossil fuels, low-skilled labour, and poorly governed states. International cooperation exists but primarily serves powerful interests.</p>
+      <p>Climate impacts diverge sharply. Wealthy regions invest in adaptation and survive. Poorer regions face compounding crises with minimal resources to respond. This is a world of islands in a rising tide.</p>
       <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Mixed</span>
         <span><strong>Cooperation:</strong> Stratified</span>
@@ -82,13 +86,14 @@ const sspData = {
       </div>`
   },
   ssp5: {
-    label:    'SSP5: Fossil-fueled Development',
+    label:    'Fossil-fueled Development',
     subtitle: 'Taking the Highway',
-    color:    '#aa3838',
+    color:    '#971818',
+    colorDark: '#6B0F0F',
     narrative: `
-      <p>[Placeholder: In this future, the world bets everything on technological solutions and economic growth. Fossil fuel development accelerates massively. Energy is abundant and cheap. GDP grows strongly across much of the world.]</p>
-      <p>[Placeholder: Human development improves in many ways — health, income, education — but at the cost of extreme carbon emissions. The assumption is that future technology (carbon capture, geoengineering) will manage the consequences.]</p>
-      <p>[Placeholder: Climate impacts are the most severe of any pathway. Temperatures rise significantly. The gamble on future technology is a high-stakes bet that may not pay off. This is the highway — fast, powerful, and with no clear off-ramp.]</p>
+      <p>In this future, the world bets everything on technological solutions and economic growth. Fossil fuel development accelerates massively. Energy is abundant and cheap. GDP grows strongly across much of the world.</p>
+      <p>Human development improves in many ways — health, income, education — but at the cost of extreme carbon emissions. The assumption is that future technology (carbon capture, geoengineering) will manage the consequences.</p>
+      <p>Climate impacts are the most severe of any pathway. Temperatures rise significantly. The gamble on future technology is a high-stakes bet that may not pay off. This is the highway — fast, powerful, and with no clear off-ramp.</p>
       <div class="carousel-meta">
         <span><strong>Climate impact:</strong> Very high</span>
         <span><strong>Cooperation:</strong> Moderate</span>
@@ -244,8 +249,12 @@ function selectFromCarousel() {
   document.querySelectorAll('.future-card').forEach(c => c.classList.remove('selected'));
   document.querySelector('[data-id="' + id + '"]').classList.add('selected');
 
-  document.getElementById('start-status').textContent = 'You think we are in ' + ssp.label + '.';
+  document.getElementById('start-status').textContent = 'You think we\'re on the ' + ssp.label + ' pathway.';
   document.getElementById('btn-add-predictions').disabled = false;
+
+  document.documentElement.style.setProperty('--scenario-color', ssp.color);
+  document.documentElement.style.setProperty('--scenario-color-dark', ssp.colorDark);
+  document.body.classList.add('scenario-selected');
 
   document.getElementById('carousel-select-btn').textContent = 'Selected ✓';
   closeCarousel();
