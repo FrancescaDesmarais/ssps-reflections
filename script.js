@@ -1,5 +1,5 @@
 // Replace with your deployed Apps Script URL
-const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwbituNMr_1L08CACjg5TDbNhaVXdrGRqxpYvioG9OR5zm5lnU_VNEqGdPdmcbzh75K/exec';
 
 // ─── DATA ───────────────────────────────────────────────────────────────────
 
