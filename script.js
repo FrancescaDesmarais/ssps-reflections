@@ -155,7 +155,7 @@ async function openCarousel(startIndex) {
 
   document.body.style.overflow = 'hidden';
 
-  // — Phase 1: clone the card image and expand to fullscreen —
+  // — Phase 1: clone the card (image + colour overlay) and expand to fullscreen —
   const expandEl = document.createElement('div');
   expandEl.style.cssText = `
     position: fixed;
@@ -167,12 +167,22 @@ async function openCarousel(startIndex) {
     background-size: cover;
     background-position: center;
     z-index: 99;
+    overflow: hidden;
     will-change: top, left, width, height;
     transition: top 0.75s cubic-bezier(0.4,0,0.2,1),
                 left 0.75s cubic-bezier(0.4,0,0.2,1),
                 width 0.75s cubic-bezier(0.4,0,0.2,1),
                 height 0.75s cubic-bezier(0.4,0,0.2,1);
   `;
+  const expandColor = document.createElement('div');
+  expandColor.style.cssText = `
+    position: absolute;
+    inset: 0;
+    background-color: ${future.color};
+    opacity: 0.78;
+    transition: opacity 0.65s ease;
+  `;
+  expandEl.appendChild(expandColor);
   document.body.appendChild(expandEl);
 
   expandEl.getBoundingClientRect(); // force reflow
@@ -183,30 +193,29 @@ async function openCarousel(startIndex) {
 
   await delay(800);
 
-  // — Phase 2: fade colour wash over the fullscreen image —
-  overlayBg.style.transition       = 'none';
-  overlayBg.style.opacity          = '0';
-  overlayBg.style.backgroundColor  = future.color;
-  overlay.style.opacity            = '1';
-  overlay.style.transition         = 'none';
+  // — Phase 2: fade colour overlay to fully opaque —
+  expandColor.style.opacity = '1';
+  document.documentElement.style.transition      = 'background-color 0.65s ease';
+  document.documentElement.style.backgroundColor = future.color;
+
+  await delay(700);
+
+  // — Phase 3: swap to real overlay (seamless — same solid colour) —
+  overlayBg.style.transition      = 'none';
+  overlayBg.style.opacity         = '1';
+  overlayBg.style.backgroundColor = future.color;
+  overlay.style.opacity           = '1';
+  overlay.style.transition        = 'none';
   overlay.classList.remove('hidden');
 
-  overlayBg.getBoundingClientRect(); // force reflow
-
-  overlayBg.style.transition = 'opacity 0.65s ease';
-  overlayBg.style.opacity    = '0.78';
-  document.documentElement.style.transition       = 'background-color 0.65s ease';
-  document.documentElement.style.backgroundColor  = future.color;
-
-  await delay(750);
-
   expandEl.remove();
-  overlayBg.style.transition              = 'opacity 0.65s ease, background-color 0.85s ease';
+
+  overlayBg.style.transition              = 'background-color 0.85s ease';
   document.documentElement.style.transition = 'background-color 0.85s ease';
 
   // — Phase 3: materialise the popup —
   updateCarouselSlide(true);
-  await showPopup('form-page-1');
+  showPopup('form-page-1');
 }
 
 // ─── CAROUSEL ────────────────────────────────────────────────────────────────
@@ -227,24 +236,18 @@ async function updateCarouselSlide(instant = false) {
     return;
   }
 
-  // Fade text out, then start colour transition
-  titleEl.style.opacity = '0';
-  descEl.style.opacity  = '0';
-
-  await delay(220); // let text finish fading
+  // Start colour transition
   overlayBg.style.backgroundColor = future.color;
   document.documentElement.style.backgroundColor = future.color;
 
   // Wait for colour to fully settle (0.85s transition)
   await delay(900);
 
-  // Swap content and fade text back in
+  // Swap content instantly
   titleEl.textContent = future.title;
   descEl.innerHTML    = renderDesc(future.description);
   document.getElementById('carousel-counter').textContent =
     `${carouselIndex + 1} / ${shuffledFutures.length}`;
-  titleEl.style.opacity = '1';
-  descEl.style.opacity  = '1';
 }
 
 async function carouselPrev() {
@@ -274,7 +277,7 @@ async function selectFuture() {
 
   hidePopup('form-page-1');
   renderPage2();
-  await showPopup('form-page-2');
+  showPopup('form-page-2');
 }
 
 // ─── RENDER PAGE 2 ───────────────────────────────────────────────────────────
@@ -352,7 +355,7 @@ function updateTally() {
 async function goBackToPage1() {
   hidePopup('form-page-2');
   updateCarouselSlide(true);
-  await showPopup('form-page-1');
+  showPopup('form-page-1');
 }
 
 // ─── CLOSE FORM ──────────────────────────────────────────────────────────────
@@ -441,24 +444,27 @@ async function fetchSummary(chosenFuture) {
   const FALLBACK_TEXT  = "Well, that's an interesting perspective.";
 
   try {
-    // Give the write a moment to land before reading back
-    await delay(1500);
+    // Give the write time to land before reading back
+    await delay(3000);
 
     const res = await Promise.race([
       fetch(APPS_SCRIPT_URL),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 7000))
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 12000))
     ]);
 
     const data = await res.json();
+    console.log('fetchSummary response:', data);
 
-    if (data.status === 'success' && data.total >= 2) {
+    if (data.status === 'success' && data.total >= 1) {
       const chosenCount = data.counts[chosenFuture] || 0;
       const pct         = chosenCount / data.total;
       headlineEl.textContent = pct >= 0.4 ? COMMON_TEXT : VISIONARY_TEXT;
     } else {
+      console.warn('fetchSummary: unexpected data', data);
       headlineEl.textContent = FALLBACK_TEXT;
     }
-  } catch (_) {
+  } catch (err) {
+    console.error('fetchSummary failed:', err);
     headlineEl.textContent = FALLBACK_TEXT;
   }
 
@@ -475,13 +481,9 @@ function renderDesc(text) {
   return text.split('\n\n').map(p => `<p>${p}</p>`).join('');
 }
 
-async function showPopup(id) {
-  const popup   = document.getElementById(id);
-  const content = popup.querySelector('.popup-content');
-  content.classList.remove('visible');
+function showPopup(id) {
+  const popup = document.getElementById(id);
   popup.classList.remove('hidden');
-  await delay(650);              // let the box fade in first
-  content.classList.add('visible');
 }
 
 function hidePopup(id) {
