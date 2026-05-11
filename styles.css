@@ -188,6 +188,14 @@ a:hover {
   opacity: 1;
 }
 
+.completed-body {
+  color: var(--text-muted);
+  max-width: 460px;
+  margin: 0 auto 2.25rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
 .next-steps {
   list-style: none;
   display: flex;

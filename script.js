@@ -9,7 +9,7 @@ const FUTURES = [
     id: 'sustainability',
     title: 'Sustainability',
     color: '#c35839',
-    description: 'In this future, the world shifts toward sustainable development. Societies globally prioritise environmental stewardship alongside human well-being. Inequalities reduce. Consumption patterns shift towards lower resource intensity. Fossil fuels are phased out rapidly. Education, healthcare, and living standards improve across the board. International cooperation is strong — global institutions hold and function. Climate impacts, while still present due to historical emissions, are managed through both ambitious mitigation and proactive adaptation. This pathway requires significant global political will but represents a hopeful and coherent trajectory.',
+    description: `In this future, the world shifts toward sustainable development. Societies globally prioritise environmental stewardship alongside human well-being. Inequalities reduce. Consumption patterns shift towards lower resource intensity.\n\nFossil fuels are phased out rapidly. Education, healthcare, and living standards improve across the board. International cooperation is strong — global institutions hold and function.\n\nClimate impacts, while still present due to historical emissions, are managed through both ambitious mitigation and proactive adaptation. This pathway requires significant global political will but represents a hopeful and coherent trajectory.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '[Placeholder: How rapid AI development accelerates or complicates the sustainability transition in this pathway]' },
       { id: 'aiCollapse',       icon: 'collapse',       title: 'AI Collapse',       text: '[Placeholder: How an AI collapse disrupts the cooperative global institutions this pathway depends on]' },
@@ -21,7 +21,7 @@ const FUTURES = [
     id: 'middle-of-the-road',
     title: 'Middle of the Road',
     color: '#c13e36',
-    description: 'In this future, social, economic, and technological trends do not shift markedly from historical patterns. Development and income growth proceed unevenly. Some countries make progress on sustainability; others lag behind. Global emissions follow a moderate path — not the catastrophic worst case, but far from the ambitious best. Environmental policies improve slowly. Technology advances, but deployment is uneven. Climate impacts grow and are partially managed. This is often called the \'business as usual\' pathway — a continuation of current trends without major transformation in either direction.',
+    description: `In this future, social, economic, and technological trends do not shift markedly from historical patterns. Development and income growth proceed unevenly. Some countries make progress on sustainability; others lag behind.\n\nGlobal emissions follow a moderate path — not the catastrophic worst case, but far from the ambitious best. Environmental policies improve slowly. Technology advances, but deployment is uneven.\n\nClimate impacts grow and are partially managed. This is often called the 'business as usual' pathway — a continuation of current trends without major transformation in either direction.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '[Placeholder: How AI growth accelerates or disrupts the uneven, moderate trajectory of this pathway]' },
       { id: 'aiCollapse',       icon: 'collapse',       title: 'AI Collapse',       text: '[Placeholder: How AI collapse compounds the already uneven development patterns of this pathway]' },
@@ -33,7 +33,7 @@ const FUTURES = [
     id: 'regional-rivalry',
     title: 'Regional Rivalry',
     color: '#990043',
-    description: 'In this future, resurgent nationalism and regional conflicts push countries inward. Global trade declines. Investment in education and technology slows. Governments focus on domestic security and food production at the expense of environmental goals. Development is slow and deeply unequal. Fossil fuel use continues strongly in many regions. Climate policies are weak or non-existent. Emissions remain high. Climate impacts are severe and unevenly distributed. Vulnerable regions face extreme consequences with little international support. Adaptation becomes the primary — and often insufficient — strategy.',
+    description: `In this future, resurgent nationalism and regional conflicts push countries inward. Global trade declines. Investment in education and technology slows. Governments focus on domestic security and food production at the expense of environmental goals.\n\nDevelopment is slow and deeply unequal. Fossil fuel use continues strongly in many regions. Climate policies are weak or non-existent. Emissions remain high.\n\nClimate impacts are severe and unevenly distributed. Vulnerable regions face extreme consequences with little international support. Adaptation becomes the primary — and often insufficient — strategy.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '[Placeholder: How AI growth interacts with the nationalist, fragmented world of Regional Rivalry]' },
       { id: 'aiCollapse',       icon: 'collapse',       title: 'AI Collapse',       text: '[Placeholder: How AI collapse compounds the instability of a regionally fragmented world]' },
@@ -45,7 +45,7 @@ const FUTURES = [
     id: 'inequality',
     title: 'Inequality',
     color: '#c03137',
-    description: 'In this future, power becomes increasingly concentrated in the hands of a global elite. A well-educated, internationally connected minority drives rapid technological development and benefits from low-emissions energy systems. Large populations — particularly in the global south — remain dependent on fossil fuels, low-skilled labour, and poorly governed states. International cooperation exists but primarily serves powerful interests. Climate impacts diverge sharply. Wealthy regions invest in adaptation and survive. Poorer regions face compounding crises with minimal resources to respond. This is a world of islands in a rising tide.',
+    description: `In this future, power becomes increasingly concentrated in the hands of a global elite. A well-educated, internationally connected minority drives rapid technological development and benefits from low-emissions energy systems.\n\nLarge populations — particularly in the global south — remain dependent on fossil fuels, low-skilled labour, and poorly governed states. International cooperation exists but primarily serves powerful interests.\n\nClimate impacts diverge sharply. Wealthy regions invest in adaptation and survive. Poorer regions face compounding crises with minimal resources to respond. This is a world of islands in a rising tide.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '[Placeholder: How AI growth widens or reshapes the divide between elites and marginalised populations in this pathway]' },
       { id: 'aiCollapse',       icon: 'collapse',       title: 'AI Collapse',       text: '[Placeholder: How AI collapse affects elite and marginalised populations differently in this pathway]' },
@@ -57,7 +57,7 @@ const FUTURES = [
     id: 'fossil-fueled',
     title: 'Fossil-fueled Development',
     color: '#340041',
-    description: 'In this future, the world bets everything on technological solutions and economic growth. Fossil fuel development accelerates massively. Energy is abundant and cheap. GDP grows strongly across much of the world. Human development improves in many ways — health, income, education — but at the cost of extreme carbon emissions. The assumption is that future technology (carbon capture, geoengineering) will manage the consequences. Climate impacts are the most severe of any pathway. Temperatures rise significantly. The gamble on future technology is a high-stakes bet that may not pay off. This is the highway — fast, powerful, and with no clear off-ramp.',
+    description: `In this future, the world bets everything on technological solutions and economic growth. Fossil fuel development accelerates massively. Energy is abundant and cheap. GDP grows strongly across much of the world.\n\nHuman development improves in many ways — health, income, education — but at the cost of extreme carbon emissions. The assumption is that future technology (carbon capture, geoengineering) will manage the consequences.\n\nClimate impacts are the most severe of any pathway. Temperatures rise significantly. The gamble on future technology is a high-stakes bet that may not pay off. This is the highway — fast, powerful, and with no clear off-ramp.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '[Placeholder: How AI growth accelerates the fossil-fueled gamble, or provides the technological salvation the pathway is betting on]' },
       { id: 'aiCollapse',       icon: 'collapse',       title: 'AI Collapse',       text: '[Placeholder: How AI collapse shatters the technological optimism this pathway is built on]' },
@@ -236,18 +236,13 @@ async function updateCarouselSlide(instant = false) {
     return;
   }
 
-  // Start colour transition
-  overlayBg.style.backgroundColor = future.color;
-  document.documentElement.style.backgroundColor = future.color;
-
-  // Wait for colour to fully settle (0.85s transition)
-  await delay(900);
-
-  // Swap content instantly
+  // Swap content and start colour transition simultaneously
   titleEl.textContent = future.title;
   descEl.innerHTML    = renderDesc(future.description);
   document.getElementById('carousel-counter').textContent =
     `${carouselIndex + 1} / ${shuffledFutures.length}`;
+  overlayBg.style.backgroundColor = future.color;
+  document.documentElement.style.backgroundColor = future.color;
 }
 
 async function carouselPrev() {
@@ -458,8 +453,8 @@ async function fetchSummary(chosenFuture) {
   const FALLBACK_TEXT  = "Well, that's an interesting perspective.";
 
   try {
-    // Give the write time to land before reading back
-    await delay(3000);
+    // Transition already takes ~2.8s so the write has had time to land
+    await delay(500);
 
     const res = await Promise.race([
       fetch(APPS_SCRIPT_URL),
