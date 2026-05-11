@@ -194,16 +194,18 @@ async function openCarousel(startIndex) {
 
   overlayBg.style.transition = 'opacity 0.65s ease';
   overlayBg.style.opacity    = '0.78';
-  document.documentElement.style.backgroundColor = future.color;
+  document.documentElement.style.transition       = 'background-color 0.65s ease';
+  document.documentElement.style.backgroundColor  = future.color;
 
   await delay(750);
 
   expandEl.remove();
-  overlayBg.style.transition = 'opacity 0.65s ease, background-color 0.85s ease';
+  overlayBg.style.transition              = 'opacity 0.65s ease, background-color 0.85s ease';
+  document.documentElement.style.transition = 'background-color 0.85s ease';
 
   // — Phase 3: materialise the popup —
   updateCarouselSlide(true);
-  document.getElementById('form-page-1').classList.remove('hidden');
+  await showPopup('form-page-1');
 }
 
 // ─── CAROUSEL ────────────────────────────────────────────────────────────────
@@ -262,16 +264,16 @@ async function carouselNext() {
 
 // ─── SELECT FUTURE → PAGE 2 ──────────────────────────────────────────────────
 
-function selectFuture() {
+async function selectFuture() {
   selectedFuture = shuffledFutures[carouselIndex];
 
   aiValues  = {};
   selectedFuture.ai.forEach(s => { aiValues[s.id] = 0; });
   shuffledAI = shuffle([...selectedFuture.ai]);
 
-  document.getElementById('form-page-1').classList.add('hidden');
+  hidePopup('form-page-1');
   renderPage2();
-  document.getElementById('form-page-2').classList.remove('hidden');
+  await showPopup('form-page-2');
 }
 
 // ─── RENDER PAGE 2 ───────────────────────────────────────────────────────────
@@ -346,10 +348,10 @@ function updateTally() {
 
 // ─── BACK TO PAGE 1 ──────────────────────────────────────────────────────────
 
-function goBackToPage1() {
-  document.getElementById('form-page-2').classList.add('hidden');
-  document.getElementById('form-page-1').classList.remove('hidden');
+async function goBackToPage1() {
+  hidePopup('form-page-2');
   updateCarouselSlide(true);
+  await showPopup('form-page-1');
 }
 
 // ─── CLOSE FORM ──────────────────────────────────────────────────────────────
@@ -358,8 +360,8 @@ function closeForm() {
   const overlay   = document.getElementById('active-overlay');
   const overlayBg = document.getElementById('overlay-bg');
 
-  document.getElementById('form-page-1').classList.add('hidden');
-  document.getElementById('form-page-2').classList.add('hidden');
+  hidePopup('form-page-1');
+  hidePopup('form-page-2');
 
   overlay.style.transition = 'opacity 0.5s ease';
   overlay.style.opacity    = '0';
@@ -370,6 +372,7 @@ function closeForm() {
     overlay.style.transition   = '';
     overlayBg.style.opacity    = '';
     overlayBg.style.transition = '';
+    document.documentElement.style.transition      = '';
     document.documentElement.style.backgroundColor = '';
     document.body.style.overflow = '';
   }, 500);
@@ -421,7 +424,44 @@ async function submitForm() {
   document.getElementById('state-not-started').classList.add('hidden');
   document.getElementById('state-completed').classList.remove('hidden');
 
+  const chosenTitle = selectedFuture.title;
   selectedFuture = null;
+
+  fetchSummary(chosenTitle);
+}
+
+// ─── FETCH SUMMARY ───────────────────────────────────────────────────────────
+
+async function fetchSummary(chosenFuture) {
+  const headlineEl = document.getElementById('completed-headline');
+
+  const COMMON_TEXT    = "This has been a pretty common choice so far, you're tuned into the zeitgeist.";
+  const VISIONARY_TEXT = "You're seeing things differently than others so far, you're a visionary.";
+  const FALLBACK_TEXT  = "Well, that's an interesting perspective.";
+
+  try {
+    // Give the write a moment to land before reading back
+    await delay(1500);
+
+    const res = await Promise.race([
+      fetch(APPS_SCRIPT_URL),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 7000))
+    ]);
+
+    const data = await res.json();
+
+    if (data.status === 'success' && data.total >= 2) {
+      const chosenCount = data.counts[chosenFuture] || 0;
+      const pct         = chosenCount / data.total;
+      headlineEl.textContent = pct >= 0.4 ? COMMON_TEXT : VISIONARY_TEXT;
+    } else {
+      headlineEl.textContent = FALLBACK_TEXT;
+    }
+  } catch (_) {
+    headlineEl.textContent = FALLBACK_TEXT;
+  }
+
+  headlineEl.classList.add('visible');
 }
 
 // ─── UTILITY ─────────────────────────────────────────────────────────────────
@@ -432,6 +472,22 @@ function delay(ms) {
 
 function renderDesc(text) {
   return text.split('\n\n').map(p => `<p>${p}</p>`).join('');
+}
+
+async function showPopup(id) {
+  const popup   = document.getElementById(id);
+  const content = popup.querySelector('.popup-content');
+  content.classList.remove('visible');
+  popup.classList.remove('hidden');
+  await delay(650);              // let the box fade in first
+  content.classList.add('visible');
+}
+
+function hidePopup(id) {
+  const popup   = document.getElementById(id);
+  const content = popup.querySelector('.popup-content');
+  content.classList.remove('visible');
+  popup.classList.add('hidden');
 }
 
 // ─── START ───────────────────────────────────────────────────────────────────

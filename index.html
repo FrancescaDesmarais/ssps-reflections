@@ -21,7 +21,7 @@
 
     <!-- NOT STARTED STATE -->
     <div id="state-not-started">
-      <p class="intro-text">In 2014, a group of scientists developed five future scenarios for our world. Now, a decade on — which future pathway do you think we are on?<br><br>Click on a future to explore and share your perspective.</p>
+      <p class="intro-text">In 2014, a group of scientists developed five future scenarios for our world.<br><br>Now, a decade on — which future pathway do you think we are on? Click on a future to explore and share your perspective.</p>
       <div id="futures-list">
         <!-- Populated by script.js -->
       </div>
@@ -31,8 +31,7 @@
     <div id="state-completed" class="hidden">
       <div class="completed-inner">
         <p class="completed-label">Your reflection has been recorded.</p>
-        <h2 class="completed-headline">Well, that's an interesting perspective.</h2>
-        <p class="completed-body">The world is complex, and so is your reading of it. Every perspective adds to the picture.</p>
+        <h2 class="completed-headline" id="completed-headline"></h2>
         <ul class="next-steps">
           <li>→ Share this with others who might see it differently</li>
           <li>→ <a href="https://www.linkedin.com/in/francescadesmarais/" target="_blank" rel="noopener">Follow Francesca on LinkedIn</a> to see the results when they are shared back</li>
@@ -48,35 +47,39 @@
 
     <!-- FORM PAGE 1: CAROUSEL -->
     <div id="form-page-1" class="popup hidden">
-      <button class="close-btn" onclick="closeForm()" aria-label="Close">✕</button>
-      <div class="carousel-slide-area">
-        <h3 id="carousel-future-title" class="carousel-title"></h3>
-        <p id="carousel-future-desc" class="carousel-desc"></p>
+      <div class="popup-content">
+        <button class="close-btn" onclick="closeForm()" aria-label="Close">✕</button>
+        <div class="carousel-slide-area">
+          <h3 id="carousel-future-title" class="carousel-title"></h3>
+          <p id="carousel-future-desc" class="carousel-desc"></p>
+        </div>
+        <div class="carousel-nav">
+          <button id="btn-prev" onclick="carouselPrev()">← Prev</button>
+          <span id="carousel-counter"></span>
+          <button id="btn-next" onclick="carouselNext()">Next →</button>
+        </div>
+        <button id="btn-select-future" onclick="selectFuture()">We're on this pathway →</button>
       </div>
-      <div class="carousel-nav">
-        <button id="btn-prev" onclick="carouselPrev()">← Prev</button>
-        <span id="carousel-counter"></span>
-        <button id="btn-next" onclick="carouselNext()">Next →</button>
-      </div>
-      <button id="btn-select-future" onclick="selectFuture()">We're on this pathway →</button>
     </div>
 
     <!-- FORM PAGE 2: AI SCENARIOS -->
     <div id="form-page-2" class="popup hidden">
-      <button class="close-btn" onclick="closeForm()" aria-label="Close">✕</button>
-      <p id="page2-subheader" class="page2-subheader"></p>
-      <h2 class="page2-header">How will AI change this future?</h2>
-      <p class="page2-intro">This future pathway was written before the AI breakthroughs of the past few years. Below are four scenarios for how AI could challenge or accelerate some of the underlying assumptions. What's the chance that a given scenario happens this century?</p>
-      <div id="ai-scenarios-grid" class="ai-grid">
-        <!-- Populated by script.js -->
-      </div>
-      <div class="tally-bar">
-        <span id="tally-text">Total: 0%</span>
-        <span id="tally-hint">100% remaining</span>
-      </div>
-      <div class="page2-nav">
-        <button onclick="goBackToPage1()">← Back</button>
-        <button id="btn-submit" onclick="submitForm()" disabled>Submit</button>
+      <div class="popup-content">
+        <button class="close-btn" onclick="closeForm()" aria-label="Close">✕</button>
+        <p id="page2-subheader" class="page2-subheader"></p>
+        <h2 class="page2-header">How will AI change this future?</h2>
+        <p class="page2-intro">This future pathway was written before the AI breakthroughs of the past few years. Below are four scenarios for how AI could challenge or accelerate some of the underlying assumptions. What's the chance that a given scenario happens this century?</p>
+        <div id="ai-scenarios-grid" class="ai-grid">
+          <!-- Populated by script.js -->
+        </div>
+        <div class="tally-bar">
+          <span id="tally-text">Total: 0%</span>
+          <span id="tally-hint">100% remaining</span>
+        </div>
+        <div class="page2-nav">
+          <button onclick="goBackToPage1()">← Back</button>
+          <button id="btn-submit" onclick="submitForm()" disabled>Submit</button>
+        </div>
       </div>
     </div>
 
