@@ -58,7 +58,7 @@ a:hover {
 /* ─── FORM SECTION ─── */
 #form-section {
   padding: 0 1.5rem 8rem;
-  max-width: 860px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -82,7 +82,7 @@ a:hover {
 .future-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 4;
   overflow: hidden;
   cursor: pointer;
   border-radius: 3px;
@@ -294,6 +294,10 @@ a:hover {
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.82);
   transition: opacity 0.2s ease;
+}
+
+.carousel-desc p + p {
+  margin-top: 0.85em;
 }
 
 .carousel-nav {

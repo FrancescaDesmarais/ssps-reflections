@@ -89,11 +89,12 @@ const ICONS = {
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 
-let shuffledFutures = [];
-let carouselIndex   = 0;
-let selectedFuture  = null;
-let aiValues        = {};
-let shuffledAI      = [];
+let shuffledFutures       = [];
+let carouselIndex         = 0;
+let selectedFuture        = null;
+let aiValues              = {};
+let shuffledAI            = [];
+let carouselTransitioning = false;
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 
@@ -140,70 +141,123 @@ function renderFutureCards() {
 
 // ─── OPEN CAROUSEL ───────────────────────────────────────────────────────────
 
-function openCarousel(startIndex) {
+async function openCarousel(startIndex) {
   carouselIndex = startIndex;
-
+  const future    = shuffledFutures[carouselIndex];
   const overlay   = document.getElementById('active-overlay');
   const overlayBg = document.getElementById('overlay-bg');
 
-  // Set initial state: transparent, then fade in
-  overlay.style.opacity    = '0';
-  overlay.style.transition = 'none';
-  overlayBg.style.backgroundColor = shuffledFutures[carouselIndex].color;
-  overlay.classList.remove('hidden');
-
-  // Force reflow so browser registers the initial opacity before transitioning
-  overlay.getBoundingClientRect();
-
-  overlay.style.transition = 'opacity 0.55s ease';
-  overlay.style.opacity    = '1';
-
-  // Materialise the popup after the overlay has settled
-  setTimeout(() => {
-    updateCarouselSlide(true);
-    document.getElementById('form-page-1').classList.remove('hidden');
-  }, 520);
+  // Capture card bounds before any DOM changes
+  const card         = document.querySelectorAll('.future-card')[startIndex];
+  const rect         = card.getBoundingClientRect();
+  const cardBgImage  = window.getComputedStyle(card.querySelector('.card-bg')).backgroundImage;
 
   document.body.style.overflow = 'hidden';
+
+  // — Phase 1: clone the card image and expand to fullscreen —
+  const expandEl = document.createElement('div');
+  expandEl.style.cssText = `
+    position: fixed;
+    top: ${rect.top}px;
+    left: ${rect.left}px;
+    width: ${rect.width}px;
+    height: ${rect.height}px;
+    background-image: ${cardBgImage};
+    background-size: cover;
+    background-position: center;
+    z-index: 99;
+    will-change: top, left, width, height;
+    transition: top 0.75s cubic-bezier(0.4,0,0.2,1),
+                left 0.75s cubic-bezier(0.4,0,0.2,1),
+                width 0.75s cubic-bezier(0.4,0,0.2,1),
+                height 0.75s cubic-bezier(0.4,0,0.2,1);
+  `;
+  document.body.appendChild(expandEl);
+
+  expandEl.getBoundingClientRect(); // force reflow
+  expandEl.style.top    = '0';
+  expandEl.style.left   = '0';
+  expandEl.style.width  = '100vw';
+  expandEl.style.height = '100vh';
+
+  await delay(800);
+
+  // — Phase 2: fade colour wash over the fullscreen image —
+  overlayBg.style.transition       = 'none';
+  overlayBg.style.opacity          = '0';
+  overlayBg.style.backgroundColor  = future.color;
+  overlay.style.opacity            = '1';
+  overlay.style.transition         = 'none';
+  overlay.classList.remove('hidden');
+
+  overlayBg.getBoundingClientRect(); // force reflow
+
+  overlayBg.style.transition = 'opacity 0.65s ease';
+  overlayBg.style.opacity    = '0.78';
+  document.documentElement.style.backgroundColor = future.color;
+
+  await delay(750);
+
+  expandEl.remove();
+  overlayBg.style.transition = 'opacity 0.65s ease, background-color 0.85s ease';
+
+  // — Phase 3: materialise the popup —
+  updateCarouselSlide(true);
+  document.getElementById('form-page-1').classList.remove('hidden');
 }
 
 // ─── CAROUSEL ────────────────────────────────────────────────────────────────
 
-function updateCarouselSlide(instant = false) {
-  const future   = shuffledFutures[carouselIndex];
-  const titleEl  = document.getElementById('carousel-future-title');
-  const descEl   = document.getElementById('carousel-future-desc');
+async function updateCarouselSlide(instant = false) {
+  const future    = shuffledFutures[carouselIndex];
+  const titleEl   = document.getElementById('carousel-future-title');
+  const descEl    = document.getElementById('carousel-future-desc');
   const overlayBg = document.getElementById('overlay-bg');
 
-  overlayBg.style.backgroundColor = future.color;
-
   if (instant) {
+    overlayBg.style.backgroundColor = future.color;
+    document.documentElement.style.backgroundColor = future.color;
     titleEl.textContent = future.title;
-    descEl.textContent  = future.description;
-  } else {
-    // Fade text out → swap → fade back in
-    titleEl.style.opacity = '0';
-    descEl.style.opacity  = '0';
-    setTimeout(() => {
-      titleEl.textContent = future.title;
-      descEl.textContent  = future.description;
-      titleEl.style.opacity = '1';
-      descEl.style.opacity  = '1';
-    }, 220);
+    descEl.innerHTML    = renderDesc(future.description);
+    document.getElementById('carousel-counter').textContent =
+      `${carouselIndex + 1} / ${shuffledFutures.length}`;
+    return;
   }
 
+  // Fade text out, then start colour transition
+  titleEl.style.opacity = '0';
+  descEl.style.opacity  = '0';
+
+  await delay(220); // let text finish fading
+  overlayBg.style.backgroundColor = future.color;
+  document.documentElement.style.backgroundColor = future.color;
+
+  // Wait for colour to fully settle (0.85s transition)
+  await delay(900);
+
+  // Swap content and fade text back in
+  titleEl.textContent = future.title;
+  descEl.innerHTML    = renderDesc(future.description);
   document.getElementById('carousel-counter').textContent =
     `${carouselIndex + 1} / ${shuffledFutures.length}`;
+  titleEl.style.opacity = '1';
+  descEl.style.opacity  = '1';
 }
 
-function carouselPrev() {
+async function carouselPrev() {
+  if (carouselTransitioning) return;
+  carouselTransitioning = true;
   carouselIndex = (carouselIndex - 1 + shuffledFutures.length) % shuffledFutures.length;
-  updateCarouselSlide();
+  await updateCarouselSlide();
+  carouselTransitioning = false;
 }
 
-function carouselNext() {
+async function carouselNext() {
+  if (carouselTransitioning) return;
+  carouselTransitioning = true;
   carouselIndex = (carouselIndex + 1) % shuffledFutures.length;
-  updateCarouselSlide();
+  await updateCarouselSlide();
+  carouselTransitioning = false;
 }
 
 // ─── SELECT FUTURE → PAGE 2 ──────────────────────────────────────────────────
@@ -246,7 +300,7 @@ function renderPage2() {
           aria-label="${scenario.title} probability percentage"
           oninput="updateTally()"
         >
-        <span class="pct-label">%</span>
+        <span class="pct-label">% chance of happening</span>
       </div>
     `;
     grid.appendChild(box);
@@ -301,7 +355,8 @@ function goBackToPage1() {
 // ─── CLOSE FORM ──────────────────────────────────────────────────────────────
 
 function closeForm() {
-  const overlay = document.getElementById('active-overlay');
+  const overlay   = document.getElementById('active-overlay');
+  const overlayBg = document.getElementById('overlay-bg');
 
   document.getElementById('form-page-1').classList.add('hidden');
   document.getElementById('form-page-2').classList.add('hidden');
@@ -311,8 +366,11 @@ function closeForm() {
 
   setTimeout(() => {
     overlay.classList.add('hidden');
-    overlay.style.opacity    = '';
-    overlay.style.transition = '';
+    overlay.style.opacity      = '';
+    overlay.style.transition   = '';
+    overlayBg.style.opacity    = '';
+    overlayBg.style.transition = '';
+    document.documentElement.style.backgroundColor = '';
     document.body.style.overflow = '';
   }, 500);
 
@@ -355,9 +413,11 @@ async function submitForm() {
   page2.style.transition = '';
   overlay.style.opacity    = '';
   overlay.style.transition = '';
+  document.documentElement.style.backgroundColor = '';
   document.body.style.overflow = '';
 
   // Show completed state
+  document.getElementById('title-section').classList.add('hidden');
   document.getElementById('state-not-started').classList.add('hidden');
   document.getElementById('state-completed').classList.remove('hidden');
 
@@ -368,6 +428,10 @@ async function submitForm() {
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function renderDesc(text) {
+  return text.split('\n\n').map(p => `<p>${p}</p>`).join('');
 }
 
 // ─── START ───────────────────────────────────────────────────────────────────
