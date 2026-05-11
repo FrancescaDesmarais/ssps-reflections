@@ -601,6 +601,10 @@ a:hover {
     font-size: clamp(4.5rem, 13vw, 7.5rem);
   }
 
+  .future-card {
+    aspect-ratio: 16 / 9;
+  }
+
   .popup {
     padding: 2rem 1.25rem 1.75rem;
     max-height: 92vh;

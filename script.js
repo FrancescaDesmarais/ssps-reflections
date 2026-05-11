@@ -387,49 +387,63 @@ function closeForm() {
 // ─── SUBMIT ──────────────────────────────────────────────────────────────────
 
 async function submitForm() {
-  // Send to Google Sheets (fire and forget — no-cors means we can't read the response)
+  // Capture before any async work
+  const chosenTitle = selectedFuture.title;
+  selectedFuture    = null;
+
+  // Send to Google Sheets (fire and forget)
   const params = new URLSearchParams({
-    selectedFuture:   selectedFuture.title,
+    selectedFuture:   chosenTitle,
     aiGrowth:         aiValues['aiGrowth']         || 0,
     aiCollapse:       aiValues['aiCollapse']       || 0,
     aiConstraint:     aiValues['aiConstraint']     || 0,
     aiTransformation: aiValues['aiTransformation'] || 0,
   });
-
   fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(() => {});
 
-  // Dissolve pop-up
-  const overlay = document.getElementById('active-overlay');
-  const page2   = document.getElementById('form-page-2');
+  const overlay   = document.getElementById('active-overlay');
+  const overlayBg = document.getElementById('overlay-bg');
 
-  page2.style.transition = 'opacity 0.4s ease';
-  page2.style.opacity    = '0';
+  // — Phase 1: black overlay fades in over everything —
+  const blackEl = document.createElement('div');
+  blackEl.style.cssText = `
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+  `;
+  document.body.appendChild(blackEl);
 
-  await delay(420);
+  blackEl.getBoundingClientRect(); // force reflow
+  blackEl.style.opacity = '1';
 
-  // Fade out the color wash
-  overlay.style.transition = 'opacity 0.85s ease';
-  overlay.style.opacity    = '0';
+  await delay(1300);
 
-  await delay(870);
-
-  // Clean up overlay
+  // — Phase 2: swap to completed state while black —
   overlay.classList.add('hidden');
-  page2.classList.add('hidden');
-  page2.style.opacity    = '';
-  page2.style.transition = '';
-  overlay.style.opacity    = '';
-  overlay.style.transition = '';
+  overlay.style.opacity      = '';
+  overlay.style.transition   = '';
+  overlayBg.style.opacity    = '';
+  overlayBg.style.transition = '';
+  document.documentElement.style.transition      = '';
   document.documentElement.style.backgroundColor = '';
   document.body.style.overflow = '';
 
-  // Show completed state
+  document.getElementById('form-page-1').classList.add('hidden');
+  document.getElementById('form-page-2').classList.add('hidden');
   document.getElementById('title-section').classList.add('hidden');
   document.getElementById('state-not-started').classList.add('hidden');
   document.getElementById('state-completed').classList.remove('hidden');
 
-  const chosenTitle = selectedFuture.title;
-  selectedFuture = null;
+  await delay(200);
+
+  // — Phase 3: black overlay fades out, revealing completed state —
+  blackEl.style.opacity = '0';
+
+  await delay(1300);
+  blackEl.remove();
 
   fetchSummary(chosenTitle);
 }
