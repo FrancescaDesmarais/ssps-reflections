@@ -9,6 +9,7 @@ const FUTURES = [
     id: 'sustainability',
     title: 'Sustainability',
     color: '#c35839',
+    image: 'Images/Sustainability.webp',
     description: `In this future, the world shifts toward sustainable development. Societies globally prioritise environmental stewardship alongside human well-being. Inequalities reduce. Consumption patterns shift towards lower resource intensity.\n\nFossil fuels are phased out rapidly. Education, healthcare, and living standards improve across the board. International cooperation is strong — global institutions hold and function.\n\nClimate impacts, while still present due to historical emissions, are managed through both ambitious mitigation and proactive adaptation. This pathway requires significant global political will but represents a hopeful and coherent trajectory.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '<strong>AI accelerates the post-growth transition</strong> already underway — sparking advancements in clean energy, healthcare, and education and globally diffusing the gains faster than any previous technology. AI becomes the shared mechanism through which solutions leap borders and contexts, from microgrid design in Mozambique to medical breakthroughs in Manila. The 21st century stops growing and starts flourishing.' },
@@ -21,6 +22,7 @@ const FUTURES = [
     id: 'middle-of-the-road',
     title: 'Middle of the Road',
     color: '#c13e36',
+    image: 'Images/Middle_of_the_Road.webp',
     description: `In this future, social, economic, and technological trends do not shift markedly from historical patterns. Development and income growth proceed unevenly. Some countries make progress on sustainability; others lag behind.\n\nGlobal emissions follow a moderate path — not the catastrophic worst case, but far from the ambitious best. Environmental policies improve slowly. Technology advances, but deployment is uneven.\n\nClimate impacts grow and are partially managed. This is often called the 'business as usual' pathway — a continuation of current trends without major transformation in either direction.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '<strong>AI accelerates progress unevenly</strong>, delivering genuine advances in clean energy, healthcare, and productivity while concentrating the gains in wealthy, data-connected areas. The world improves and grows more unequal at the same time. The 21st century gets better. Just not for everyone, and not quite enough.' },
@@ -33,6 +35,7 @@ const FUTURES = [
     id: 'regional-rivalry',
     title: 'Regional Rivalry',
     color: '#990043',
+    image: 'Images/Regional_Rivalry.webp',
     description: `In this future, resurgent nationalism and regional conflicts push countries inward. Global trade declines. Investment in education and technology slows. Governments focus on domestic security and food production at the expense of environmental goals.\n\nDevelopment is slow and deeply unequal. Fossil fuel use continues strongly in many regions. Climate policies are weak or non-existent. Emissions remain high.\n\nClimate impacts are severe and unevenly distributed. Vulnerable regions face extreme consequences with little international support. Adaptation becomes the primary — and often insufficient — strategy.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '<strong>AI accelerates the rivalry</strong> as governments race to nationalise and weaponise models, each convinced that AI dominance is the only guarantee of survival in an already fragmenting world. The green transition stalls, not for lack of technology but lack of cooperation. The gaps between nations widen; the gaps between states and the people they surveil widen further. The 21st century turns inward and hardens.' },
@@ -45,6 +48,7 @@ const FUTURES = [
     id: 'inequality',
     title: 'Inequality',
     color: '#c03137',
+    image: 'Images/Inequality.webp',
     description: `In this future, power becomes increasingly concentrated in the hands of a global elite. A well-educated, internationally connected minority drives rapid technological development and benefits from low-emissions energy systems.\n\nLarge populations — particularly in the global south — remain dependent on fossil fuels, low-skilled labour, and poorly governed states. International cooperation exists but primarily serves powerful interests.\n\nClimate impacts diverge sharply. Wealthy regions invest in adaptation and survive. Poorer regions face compounding crises with minimal resources to respond. This is a world of islands in a rising tide.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '<strong>AI widens the divide</strong>, with AI advancements in health and green technology fuelling an ever richer global elite, while the majority of the global population face stagnating quality of life, more intense weather, and more fragmented natural ecosystems. The 21st century erases any gains in equality.' },
@@ -57,6 +61,7 @@ const FUTURES = [
     id: 'fossil-fueled',
     title: 'Fossil-fueled Development',
     color: '#340041',
+    image: 'Images/Fossil_Fueled_Development_V2.webp',
     description: `In this future, the world bets everything on technological solutions and economic growth. Fossil fuel development accelerates massively. Energy is abundant and cheap. GDP grows strongly across much of the world.\n\nHuman development improves in many ways — health, income, education — but at the cost of extreme carbon emissions. The assumption is that future technology (carbon capture, geoengineering) will manage the consequences.\n\nClimate impacts are the most severe of any pathway. Temperatures rise significantly. The gamble on future technology is a high-stakes bet that may not pay off. This is the highway — fast, powerful, and with no clear off-ramp.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '<strong>AI fuels relentless development</strong>, turbocharging an already high-growth world into something wilder and more audacious. Geoengineering is everywhere; data centres are in space: the answer to unforeseen consequences is more technology. The mood is genuinely excited, genuinely innovative, and genuinely uncontrolled. The 21st century is turbulent, optimistic, and impossible to look away from.' },
@@ -125,7 +130,7 @@ function renderFutureCards() {
     card.setAttribute('tabindex', '0');
     card.setAttribute('aria-label', `Explore ${future.title} pathway`);
     card.innerHTML = `
-      <div class="card-bg"></div>
+      <div class="card-bg" style="background-image: url('${future.image}');"></div>
       <div class="card-overlay" style="background-color: ${future.color};"></div>
       <span class="card-label">${future.title}</span>
     `;
