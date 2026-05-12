@@ -462,18 +462,15 @@ async function fetchSummary(chosenFuture) {
     ]);
 
     const data = await res.json();
-    console.log('fetchSummary response:', data);
 
     if (data.status === 'success' && data.total >= 1) {
       const chosenCount = data.counts[chosenFuture] || 0;
       const pct         = chosenCount / data.total;
       headlineEl.textContent = pct >= 0.4 ? COMMON_TEXT : VISIONARY_TEXT;
     } else {
-      console.warn('fetchSummary: unexpected data', data);
       headlineEl.textContent = FALLBACK_TEXT;
     }
   } catch (err) {
-    console.error('fetchSummary failed:', err);
     headlineEl.textContent = FALLBACK_TEXT;
   }
 
