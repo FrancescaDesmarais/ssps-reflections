@@ -200,7 +200,6 @@ async function openCarousel(startIndex) {
 
   // — Phase 2: fade colour overlay to fully opaque —
   expandColor.style.opacity = '1';
-  document.documentElement.style.transition      = 'background-color 0.65s ease';
   document.documentElement.style.backgroundColor = future.color;
 
   await delay(700);
@@ -215,8 +214,7 @@ async function openCarousel(startIndex) {
 
   expandEl.remove();
 
-  overlayBg.style.transition              = 'background-color 0.85s ease';
-  document.documentElement.style.transition = 'background-color 0.85s ease';
+  overlayBg.style.transition = 'background-color 0.85s ease';
 
   // — Phase 3: materialise the popup —
   updateCarouselSlide(true);
@@ -283,9 +281,6 @@ async function selectFuture() {
 // ─── RENDER PAGE 2 ───────────────────────────────────────────────────────────
 
 function renderPage2() {
-  document.getElementById('page2-subheader').textContent =
-    `You think we are on the ${selectedFuture.title} pathway`;
-
   const grid = document.getElementById('ai-scenarios-grid');
   grid.innerHTML = '';
 
@@ -294,7 +289,6 @@ function renderPage2() {
     box.className = 'ai-scenario-box';
     box.innerHTML = `
       <span class="ai-scenario-icon">${ICONS[scenario.icon]}</span>
-      <div class="ai-scenario-title">${scenario.title}</div>
       <p class="ai-scenario-text">${scenario.text}</p>
       <div class="ai-input-row">
         <input
@@ -304,6 +298,8 @@ function renderPage2() {
           value="0"
           id="input-${scenario.id}"
           aria-label="${scenario.title} probability percentage"
+          onfocus="if(this.value==='0')this.value=''"
+          onblur="if(this.value==='')this.value='0';updateTally()"
           oninput="updateTally()"
         >
         <span class="pct-label">% chance of happening</span>
@@ -376,7 +372,6 @@ function closeForm() {
     overlay.style.transition   = '';
     overlayBg.style.opacity    = '';
     overlayBg.style.transition = '';
-    document.documentElement.style.transition      = '';
     document.documentElement.style.backgroundColor = '';
     document.body.style.overflow = '';
   }, 500);
@@ -427,7 +422,6 @@ async function submitForm() {
   overlay.style.transition   = '';
   overlayBg.style.opacity    = '';
   overlayBg.style.transition = '';
-  document.documentElement.style.transition      = '';
   document.documentElement.style.backgroundColor = '';
   document.body.style.overflow = '';
 
@@ -441,11 +435,10 @@ async function submitForm() {
 
   // — Phase 3: black overlay fades out, revealing completed state —
   blackEl.style.opacity = '0';
+  fetchSummary(chosenTitle);
 
   await delay(1300);
   blackEl.remove();
-
-  fetchSummary(chosenTitle);
 }
 
 // ─── FETCH SUMMARY ───────────────────────────────────────────────────────────
@@ -458,9 +451,6 @@ async function fetchSummary(chosenFuture) {
   const FALLBACK_TEXT  = "Well, that's an interesting perspective.";
 
   try {
-    // Transition already takes ~2.8s so the write has had time to land
-    await delay(500);
-
     const res = await Promise.race([
       fetch(APPS_SCRIPT_URL),
       new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 12000))
@@ -494,6 +484,7 @@ function renderDesc(text) {
 
 function showPopup(id) {
   const popup = document.getElementById(id);
+  popup.scrollTop = 0;
   popup.classList.remove('hidden');
 }
 
