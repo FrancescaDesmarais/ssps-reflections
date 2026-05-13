@@ -225,14 +225,12 @@ a:hover {
   justify-content: center;
   padding: 3rem 1.5rem;
   overflow-y: auto;
+  transition: background-color 0.85s ease;
 }
 
 #overlay-bg {
-  display: none;
-}
-
-#active-overlay {
-  transition: background-color 0.85s ease;
+  position: absolute;
+  inset: 0;
 }
 
 #active-overlay {

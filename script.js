@@ -269,7 +269,7 @@ async function selectFuture() {
 
   aiValues  = {};
   selectedFuture.ai.forEach(s => { aiValues[s.id] = 0; });
-  shuffledAI = shuffle([...selectedFuture.ai]);
+  shuffledAI = [...selectedFuture.ai];
 
   hidePopup('form-page-1');
   renderPage2();
