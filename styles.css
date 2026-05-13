@@ -651,4 +651,8 @@ a:hover {
     bottom: 1rem;
     left: 1.1rem;
   }
+
+  #state-completed {
+    padding-bottom: 1.5rem;
+  }
 }

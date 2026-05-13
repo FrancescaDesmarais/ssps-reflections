@@ -424,6 +424,7 @@ async function submitForm() {
   document.getElementById('title-section').classList.add('hidden');
   document.getElementById('state-not-started').classList.add('hidden');
   document.getElementById('state-completed').classList.remove('hidden');
+  window.scrollTo(0, 0);
 
   const headlinePlaceholder = document.getElementById('completed-headline');
   headlinePlaceholder.textContent = 'Calibrating...';
