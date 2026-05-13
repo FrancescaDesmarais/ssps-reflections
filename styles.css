@@ -228,9 +228,10 @@ a:hover {
 }
 
 #overlay-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 99;
+  display: none;
+}
+
+#active-overlay {
   transition: background-color 0.85s ease;
 }
 
@@ -248,6 +249,7 @@ a:hover {
   z-index: 10;
   width: 100%;
   max-width: 680px;
+  margin: auto;
   background: rgba(255, 255, 255, 0.11);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
@@ -386,7 +388,7 @@ a:hover {
 }
 
 .page2-intro {
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   line-height: 1.75;
   color: rgba(255, 255, 255, 0.7);
   margin-bottom: 1.5rem;
@@ -446,7 +448,7 @@ a:hover {
 }
 
 .ai-scenario-text {
-  font-size: 0.78rem;
+  font-size: 0.92rem;
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.6;
   margin-bottom: 0.75rem;

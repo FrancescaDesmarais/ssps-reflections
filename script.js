@@ -10,6 +10,7 @@ const FUTURES = [
     title: 'Sustainability',
     color: '#c35839',
     image: 'Images/Sustainability-mangroves.webp',
+    bgPosition: 'top center',
     description: `In this future, the world shifts toward sustainable development. Societies globally prioritise environmental stewardship alongside human well-being. Inequalities reduce. Consumption patterns shift towards lower resource intensity.\n\nFossil fuels are phased out rapidly. Education, healthcare, and living standards improve across the board. International cooperation is strong — global institutions hold and function.\n\nClimate impacts, while still present due to historical emissions, are managed through both ambitious mitigation and proactive adaptation. This pathway requires significant global political will but represents a hopeful and coherent trajectory.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '<strong>AI accelerates the post-growth transition</strong> already underway — sparking advancements in clean energy, healthcare, and education and globally diffusing the gains faster than any previous technology. AI becomes the shared mechanism through which solutions leap borders and contexts, from microgrid design in Mozambique to medical breakthroughs in Manila. The 21st century stops growing and starts flourishing.' },
@@ -130,7 +131,7 @@ function renderFutureCards() {
     card.setAttribute('tabindex', '0');
     card.setAttribute('aria-label', `Explore ${future.title} pathway`);
     card.innerHTML = `
-      <div class="card-bg" style="background-image: url('${future.image}');"></div>
+      <div class="card-bg" style="background-image: url('${future.image}'); ${future.bgPosition ? `background-position: ${future.bgPosition};` : ''}"></div>
       <div class="card-overlay" style="background-color: ${future.color};"></div>
       <span class="card-label">${future.title}</span>
     `;
@@ -151,7 +152,6 @@ async function openCarousel(startIndex) {
   carouselIndex = startIndex;
   const future    = shuffledFutures[carouselIndex];
   const overlay   = document.getElementById('active-overlay');
-  const overlayBg = document.getElementById('overlay-bg');
 
   // Capture card bounds before any DOM changes
   const card         = document.querySelectorAll('.future-card')[startIndex];
@@ -205,16 +205,14 @@ async function openCarousel(startIndex) {
   await delay(700);
 
   // — Phase 3: swap to real overlay (seamless — same solid colour) —
-  overlayBg.style.transition      = 'none';
-  overlayBg.style.opacity         = '1';
-  overlayBg.style.backgroundColor = future.color;
-  overlay.style.opacity           = '1';
   overlay.style.transition        = 'none';
+  overlay.style.backgroundColor   = future.color;
+  overlay.style.opacity           = '1';
   overlay.classList.remove('hidden');
 
   expandEl.remove();
 
-  overlayBg.style.transition = 'background-color 0.85s ease';
+  overlay.style.transition = '';
 
   // — Phase 3: materialise the popup —
   updateCarouselSlide(true);
@@ -227,10 +225,10 @@ async function updateCarouselSlide(instant = false) {
   const future    = shuffledFutures[carouselIndex];
   const titleEl   = document.getElementById('carousel-future-title');
   const descEl    = document.getElementById('carousel-future-desc');
-  const overlayBg = document.getElementById('overlay-bg');
+  const overlay   = document.getElementById('active-overlay');
 
   if (instant) {
-    overlayBg.style.backgroundColor = future.color;
+    overlay.style.backgroundColor = future.color;
     document.documentElement.style.backgroundColor = future.color;
     titleEl.textContent = future.title;
     descEl.innerHTML    = renderDesc(future.description);
@@ -244,7 +242,7 @@ async function updateCarouselSlide(instant = false) {
   descEl.innerHTML    = renderDesc(future.description);
   document.getElementById('carousel-counter').textContent =
     `${carouselIndex + 1} / ${shuffledFutures.length}`;
-  overlayBg.style.backgroundColor = future.color;
+  overlay.style.backgroundColor = future.color;
   document.documentElement.style.backgroundColor = future.color;
 }
 
@@ -357,8 +355,7 @@ async function goBackToPage1() {
 // ─── CLOSE FORM ──────────────────────────────────────────────────────────────
 
 function closeForm() {
-  const overlay   = document.getElementById('active-overlay');
-  const overlayBg = document.getElementById('overlay-bg');
+  const overlay = document.getElementById('active-overlay');
 
   hidePopup('form-page-1');
   hidePopup('form-page-2');
@@ -368,10 +365,9 @@ function closeForm() {
 
   setTimeout(() => {
     overlay.classList.add('hidden');
-    overlay.style.opacity      = '';
-    overlay.style.transition   = '';
-    overlayBg.style.opacity    = '';
-    overlayBg.style.transition = '';
+    overlay.style.opacity         = '';
+    overlay.style.transition      = '';
+    overlay.style.backgroundColor = '';
     document.documentElement.style.backgroundColor = '';
     document.body.style.overflow = '';
   }, 500);
@@ -396,8 +392,7 @@ async function submitForm() {
   });
   fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, { mode: 'no-cors' }).catch(() => {});
 
-  const overlay   = document.getElementById('active-overlay');
-  const overlayBg = document.getElementById('overlay-bg');
+  const overlay = document.getElementById('active-overlay');
 
   // — Phase 1: black overlay fades in over everything —
   const blackEl = document.createElement('div');
@@ -418,10 +413,9 @@ async function submitForm() {
 
   // — Phase 2: swap to completed state while black —
   overlay.classList.add('hidden');
-  overlay.style.opacity      = '';
-  overlay.style.transition   = '';
-  overlayBg.style.opacity    = '';
-  overlayBg.style.transition = '';
+  overlay.style.opacity         = '';
+  overlay.style.transition      = '';
+  overlay.style.backgroundColor = '';
   document.documentElement.style.backgroundColor = '';
   document.body.style.overflow = '';
 
