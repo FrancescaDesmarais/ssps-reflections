@@ -317,7 +317,9 @@ function updateTally() {
   selectedFuture.ai.forEach(s => {
     const input = document.getElementById(`input-${s.id}`);
     if (!input) return;
-    const val = Math.max(0, Math.min(100, parseInt(input.value, 10) || 0));
+    const raw = parseFloat(input.value) || 0;
+    const val = Math.max(0, Math.min(100, Math.ceil(raw)));
+    if (input.value !== '' && parseFloat(input.value) !== val) input.value = val;
     aiValues[s.id] = val;
     total += val;
   });
