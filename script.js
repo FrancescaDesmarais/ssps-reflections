@@ -184,7 +184,7 @@ async function openCarousel(startIndex) {
     position: absolute;
     inset: 0;
     background-color: ${future.color};
-    opacity: 0.78;
+    opacity: 0.86;
     transition: opacity 0.65s ease;
   `;
   expandEl.appendChild(expandColor);
@@ -484,8 +484,8 @@ function renderDesc(text) {
 
 function showPopup(id) {
   const popup = document.getElementById(id);
-  popup.scrollTop = 0;
   popup.classList.remove('hidden');
+  document.getElementById('active-overlay').scrollTop = 0;
 }
 
 function hidePopup(id) {
