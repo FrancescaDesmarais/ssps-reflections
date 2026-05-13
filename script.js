@@ -425,6 +425,10 @@ async function submitForm() {
   document.getElementById('state-not-started').classList.add('hidden');
   document.getElementById('state-completed').classList.remove('hidden');
 
+  const headlinePlaceholder = document.getElementById('completed-headline');
+  headlinePlaceholder.textContent = 'Calibrating...';
+  headlinePlaceholder.classList.add('visible');
+
   await delay(200);
 
   // — Phase 3: black overlay fades out, revealing completed state —
