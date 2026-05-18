@@ -36,7 +36,7 @@ const FUTURES = [
     id: 'regional-rivalry',
     title: 'Regional Rivalry',
     color: '#990043',
-    image: 'Images/RegionalRivalry-tanks.webp',
+    image: 'Images/regionalrivalry-explosion.webp',
     description: `In this future, resurgent nationalism and regional conflicts push countries inward. Global trade declines. Investment in education and technology slows. Governments focus on domestic security and food production at the expense of environmental goals.\n\nDevelopment is slow and deeply unequal. Fossil fuel use continues strongly in many regions. Climate policies are weak or non-existent. Emissions remain high.\n\nClimate impacts are severe and unevenly distributed. Vulnerable regions face extreme consequences with little international support. Adaptation becomes the primary—and often insufficient—strategy.`,
     ai: [
       { id: 'aiGrowth',         icon: 'growth',         title: 'AI Growth',         text: '<strong>AI accelerates the rivalry</strong> as governments race to nationalise and weaponise models, each convinced that AI dominance is the only guarantee of survival in an already fragmenting world. The green transition stalls, not for lack of technology but lack of cooperation. The gaps between nations widen; the gaps between states and the people they surveil widen further. The 21st century turns inward and hardens.' },
